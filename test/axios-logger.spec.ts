@@ -23,7 +23,7 @@ describe('Axios Logger Test Suite', () => {
   @suite('Axios Logger Utilities Test Suite')
   class AxiosLoggerTestSuite extends AxiosLogger {
     @test
-    public 'Test that starting line of request/response is displayed properly'() {
+    'Test that starting line of request/response is displayed properly'() {
       const name = 'Request'
       expect(this.startingLine(name)).to.equal(
         `┌────── ${name} ──────────────────────────────────────────────────────────────────────────────────────────────`
@@ -31,7 +31,7 @@ describe('Axios Logger Test Suite', () => {
     }
 
     @test
-    public 'Test that ending line of request/response is displayed properly'() {
+    'Test that ending line of request/response is displayed properly'() {
       expect(this.endingLine()).to.equal(
         `└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
       )
@@ -39,9 +39,9 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Request Test Suite')
-  public class AxiosLoggerRequestTestSuite extends AxiosLogger {
+  class AxiosLoggerRequestTestSuite extends AxiosLogger {
     @test
-    public 'Test simple get request'() {
+    'Test simple get request'() {
       let message: string = ''
       const loggerMock: LogFn = (
         msg: string | object,
@@ -77,7 +77,7 @@ describe('Axios Logger Test Suite', () => {
     }
 
     @test
-    public 'Test simple post request'() {
+    'Test simple post request'() {
       let message: string = ''
       const loggerMock: LogFn = (
         msg: string | object,
@@ -134,9 +134,9 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Response Test Suite')
-  public class AxiosLoggerResponseTestSuite extends AxiosLogger {
+  class AxiosLoggerResponseTestSuite extends AxiosLogger {
     @test
-    public 'Test Response with body'() {
+    'Test Response with body'() {
       let message: string = ''
       const loggerMock: LogFn = (
         msg: string | object,
@@ -189,7 +189,7 @@ describe('Axios Logger Test Suite', () => {
     }
 
     @test
-    public 'Test Response without body'() {
+    'Test Response without body'() {
       let message: string = ''
       const loggerMock: LogFn = (
         msg: string | object,
@@ -238,9 +238,9 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Error Test Suite')
-  public class AxiosLoggerErrorTestSuite extends AxiosLogger {
+  class AxiosLoggerErrorTestSuite extends AxiosLogger {
     @test
-    public 'Test Log Request Error'(done) {
+    'Test Log Request Error'(done) {
       let message: object | string | undefined = ''
       const infoLogMock: LogFn = (
         msg: string | object,
@@ -299,7 +299,7 @@ describe('Axios Logger Test Suite', () => {
     }
 
     @test
-    public 'Test Log Response Error'(done) {
+    'Test Log Response Error'(done) {
       let message: string | undefined = ''
       const infoLogMock: LogFn = (
         msg: string | object,
@@ -386,7 +386,7 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Test Body Formatter')
-  public class BodyPrettyFormatterTestSuite extends AxiosLogger {
+  class BodyPrettyFormatterTestSuite extends AxiosLogger {
     @params(
       {
         body: '{"name":"John","lastName":"Wick"}',
@@ -414,14 +414,14 @@ ${indent}}`
       },
       'Body object as simple string'
     )
-    public 'Test Pretty Formatting Of Body'({ body, expectedResult }) {
+    'Test Pretty Formatting Of Body'({ body, expectedResult }) {
       const formattedBody = this.prettyFormatBody(body)
       expect(formattedBody).to.equal(expectedResult)
     }
   }
 
   @suite('Test Single Header Entry Pretty Formatting')
-  public class HeaderEntryPrettyFormatterTestSuite extends AxiosLogger {
+  class HeaderEntryPrettyFormatterTestSuite extends AxiosLogger {
     @params(
       {
         headerEntry: { key: 'Accept-Content', value: 'application-json' },
@@ -458,7 +458,7 @@ ${indent}}`
       },
       'Single header entry'
     )
-    public 'Test how we print headers entry in a pretty format'({
+    'Test how we print headers entry in a pretty format'({
       headerEntry,
       isFirstElement,
       isLastElement,
@@ -471,7 +471,7 @@ ${indent}}`
   }
 
   @suite('Test Multiple Header Entries Pretty Formatting')
-  public class MultipleHeaderEntriesFormattingTestSuite extends AxiosLogger {
+  class MultipleHeaderEntriesFormattingTestSuite extends AxiosLogger {
     @params(
       {
         headers: { 'Accept-Content': 'application/json' },
@@ -532,7 +532,7 @@ ${indent}}`
       },
       'Headers are undefined'
     )
-    public 'Test headers parsing'({ headers, expectedResult }) {
+    'Test headers parsing'({ headers, expectedResult }) {
       const parsedHeader = this.parseHeaders(headers)
       logger.info(`Headers: \n${parsedHeader}`)
       expect(parsedHeader).to.equal(expectedResult)
@@ -540,8 +540,8 @@ ${indent}}`
   }
 
   @suite('Axios Integration Test Suite')
-  public class AxiosIntegrationTest extends AxiosLogger {
-    @test public 'I can see both request and response logged properly in real axios'(
+  class AxiosIntegrationTest extends AxiosLogger {
+    @test 'I can see both request and response logged properly in real axios'(
       done
     ) {
       const instance = axios.create()
