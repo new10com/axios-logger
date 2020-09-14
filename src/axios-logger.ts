@@ -1,6 +1,6 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { LogFn } from 'pino'
 import log4js, { Logger } from 'log4js'
+import { LogFn } from 'pino'
 
 interface Headers {
   [key: string]: string | object
@@ -16,20 +16,8 @@ export const indent = '  '
 type ErrorSource = 'Request' | 'Response'
 
 export class AxiosLogger {
-  protected ignoreHeaderKeys: string[] = [
-    'get',
-    'delete',
-    'post',
-    'patch',
-    'put',
-    'head',
-    'common'
-  ]
 
-  protected logInfo: LogFn
-  protected logError: LogFn
-
-  static default() {
+  public static default() {
     log4js.configure({
       appenders: {
         axios: { type: 'console', layout: { type: 'colored' }, level: 'debug' }
@@ -43,13 +31,25 @@ export class AxiosLogger {
     )
   }
 
-  static from(logger: Logger): AxiosLogger {
+  public static from(logger: Logger): AxiosLogger {
     return new AxiosLogger(logger.info.bind(logger), logger.error.bind(logger))
   }
 
-  static using(infoFn: LogFn, errorFn: LogFn) {
+  public static using(infoFn: LogFn, errorFn: LogFn) {
     return new AxiosLogger(infoFn.bind(infoFn), errorFn.bind(errorFn))
   }
+  protected ignoreHeaderKeys: string[] = [
+    'get',
+    'delete',
+    'post',
+    'patch',
+    'put',
+    'head',
+    'common'
+  ]
+
+  protected logInfo: LogFn
+  protected logError: LogFn
 
   constructor(infoFn: LogFn, errorFn: LogFn) {
     this.logInfo = infoFn

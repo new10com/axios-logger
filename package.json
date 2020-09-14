@@ -21,7 +21,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "$(yarn bin)/tslint --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc && $(yarn bin)/typedoc src",
     "test": "$(yarn bin)/nyc --reporter=lcov --reporter=text $(yarn bin)/mocha --require ts-node/register",
@@ -44,6 +44,12 @@
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn test"
     }
   },
   "prettier": {

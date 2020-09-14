@@ -7,10 +7,10 @@ import axios, {
 } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { expect } from 'chai'
+import log4js from 'log4js'
 import { LogFn } from 'pino'
 import { AxiosLogger, indent } from '../src/axios-logger'
 import { logger } from '../src/logger/logger'
-import log4js from 'log4js'
 
 describe('Axios Logger Test Suite', () => {
   log4js.configure({
@@ -39,7 +39,7 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Request Test Suite')
-  class AxiosLoggerRequestTestSuite extends AxiosLogger {
+  public class AxiosLoggerRequestTestSuite extends AxiosLogger {
     @test
     public 'Test simple get request'() {
       let message: string = ''
@@ -134,7 +134,7 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Response Test Suite')
-  class AxiosLoggerResponseTestSuite extends AxiosLogger {
+  public class AxiosLoggerResponseTestSuite extends AxiosLogger {
     @test
     public 'Test Response with body'() {
       let message: string = ''
@@ -238,7 +238,7 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Axios Logger Error Test Suite')
-  class AxiosLoggerErrorTestSuite extends AxiosLogger {
+  public class AxiosLoggerErrorTestSuite extends AxiosLogger {
     @test
     public 'Test Log Request Error'(done) {
       let message: object | string | undefined = ''
@@ -313,7 +313,7 @@ describe('Axios Logger Test Suite', () => {
         msg?: string,
         ...args: any[]
       ): void => {
-        let baseDir = __dirname.replace('/test', '')
+        const baseDir = __dirname.replace('/test', '')
         const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: /users
@@ -386,7 +386,7 @@ describe('Axios Logger Test Suite', () => {
   }
 
   @suite('Test Body Formatter')
-  class BodyPrettyFormatterTestSuite extends AxiosLogger {
+  public class BodyPrettyFormatterTestSuite extends AxiosLogger {
     @params(
       {
         body: '{"name":"John","lastName":"Wick"}',
@@ -421,7 +421,7 @@ ${indent}}`
   }
 
   @suite('Test Single Header Entry Pretty Formatting')
-  class HeaderEntryPrettyFormatterTestSuite extends AxiosLogger {
+  public class HeaderEntryPrettyFormatterTestSuite extends AxiosLogger {
     @params(
       {
         headerEntry: { key: 'Accept-Content', value: 'application-json' },
@@ -471,7 +471,7 @@ ${indent}}`
   }
 
   @suite('Test Multiple Header Entries Pretty Formatting')
-  class MultipleHeaderEntriesFormattingTestSuite extends AxiosLogger {
+  public class MultipleHeaderEntriesFormattingTestSuite extends AxiosLogger {
     @params(
       {
         headers: { 'Accept-Content': 'application/json' },
@@ -540,8 +540,8 @@ ${indent}}`
   }
 
   @suite('Axios Integration Test Suite')
-  class AxiosIntegrationTest extends AxiosLogger {
-    @test 'I can see both request and response logged properly in real axios'(
+  public class AxiosIntegrationTest extends AxiosLogger {
+    @test public 'I can see both request and response logged properly in real axios'(
       done
     ) {
       const instance = axios.create()
