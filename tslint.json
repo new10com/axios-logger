@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-eslint-rules",
+    "tslint-config-prettier",
+    "tslint-no-circular-imports"
+  ],
+  "rules": {
+    "semicolon": false,
+    "prettier": true,
+    "max-classes-per-file": false,
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "prefer-conditional-expression": false,
+    "no-implicit-dependencies": [false, "dev"],
+    "no-submodule-imports": false,
+    "no-unused-variable": [true, { "ignore-pattern": "[iI]gnored" }],
+    "no-namespace": {
+      "options": ["allow-declarations"]
+    },
+    "no-floating-promises": true,
+    "no-empty-interface": false
+  }
+}

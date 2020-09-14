@@ -1,0 +1,13 @@
+{
+  "exclude": ["node_modules/**"],
+  "ignoreCompilerErrors": true,
+  "experimentalDecorators": "true",
+  "emitDecoratorMetadata": "true",
+  "moduleResolution": "node",
+  "preserveConstEnums": "true",
+  "stripInternal": true,
+  "out": "docs",
+  "target": "es6",
+  "theme": "minimal",
+  "mode": "file"
+}
