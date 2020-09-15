@@ -25,7 +25,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc && $(yarn bin)/typedoc src",
     "test": "$(yarn bin)/nyc --reporter=lcov --reporter=text $(yarn bin)/mocha --require ts-node/register",
-    "build:prod": "yarn test:prod && build",
+    "build:prod": "yarn test:prod && yarn build",
     "test:prod": "yarn lint && yarn test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
