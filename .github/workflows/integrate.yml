@@ -17,6 +17,6 @@ jobs:
       - name: "🕐 install"
         run: npm install
       - name: "🚦 lint&test"
-        run: npm test:prod
+        run: npm run test:prod
       - name: "🏗 build"
         run: npm run build

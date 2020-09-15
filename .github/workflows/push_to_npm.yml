@@ -18,7 +18,7 @@ jobs:
       - name: "🕐 install"
         run: npm install
       - name: "🏗 build"
-        run: npm build:prod
+        run: npm run build:prod
       - name: "🚀 publish"
         run: npm publish --access public
         env:
