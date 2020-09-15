@@ -30,6 +30,17 @@ instance.interceptors.request.use((config) => {
     axiosLogger.logRequest(config)
     return config
 })
+axios.get('https://jsonplaceholder.typicode.com/users')
+```
+
+Request details will be logged this way:
+```
+┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://jsonplaceholder.typicode.com/users
+  Method: @GET
+  Headers:
+  └ Accept: "application/json, text/plain, */*"
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ```
 
 Or you can use custom `log4js` instance with settings that you need:
@@ -76,7 +87,57 @@ instance.interceptors.response.use((response) => {
     axiosLogger.logResponse(response)
     return response
 })
+axios.get('https://jsonplaceholder.typicode.com/users')
 ````
+Logged response will look like this:
+```
+┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://jsonplaceholder.typicode.com/users
+  Method: @GET
+  Status: 200  OK
+  Headers
+  ┌ date: "Tue, 15 Sep 2020 07:52:33 GMT"
+  ├ content-type: "application/json; charset=utf-8"
+  ├ transfer-encoding: "chunked"
+  ├ connection: "close"
+  ├ x-powered-by: "Express"
+  ├ x-ratelimit-limit: "1000"
+  ├ x-ratelimit-remaining: "998"
+  ├ x-ratelimit-reset: "1599014805"
+  ├ vary: "Origin, Accept-Encoding"
+  ├ access-control-allow-credentials: "true"
+  ├ cache-control: "max-age=43200"
+  ├ pragma: "no-cache"
+  ├ expires: "-1"
+  └ cf-ray: "5d30c4d63ff00bf9-AMS"
+  Body:
+  [
+        {
+                "id": 1,
+                "name": "Leanne Graham",
+                "username": "Bret",
+                "email": "Sincere@april.biz",
+                "address": {
+                        "street": "Kulas Light",
+                        "suite": "Apt. 556",
+                        "city": "Gwenborough",
+                        "zipcode": "92998-3874",
+                        "geo": {
+                                "lat": "-37.3159",
+                                "lng": "81.1496"
+                        }
+                },
+                "phone": "1-770-736-8031 x56442",
+                "website": "hildegard.org",
+                "company": {
+                        "name": "Romaguera-Crona",
+                        "catchPhrase": "Multi-layered client-server neural-net",
+                        "bs": "harness real-time e-markets"
+                }
+        }
+]
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+```
 
 ### Error
 
@@ -103,6 +164,49 @@ instance.interceptors.response.use((response) => {
 })
 ```
 
+In case of error, you gonna get logged `request`, `response` and `error` all together:
+```
+┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com/users
+  Method: @GET
+  Headers:
+  ┌ Accept: "application/json, text/plain, */*"
+  └ Authorization: "{Super-Secret-Token}"
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com/users
+  Method: @GET
+  Status: 400  Bad Request
+  Headers
+  ┌
+  ├ Content: "application/json"
+  └
+  Body:
+  {
+\t"error": "Failure"
+  }
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+┌────── Response Error ──────────────────────────────────────────────────────────────────────────────────────────────
+  Message: @Request failed with status code 400
+  StackTrace: @Error: Request failed with status code 400
+    at createAxiosError (${baseDir}/node_modules/axios-mock-adapter/src/utils.js:148:15)
+    at Object.settle (${baseDir}/node_modules/axios-mock-adapter/src/utils.js:127:9)
+    at handleRequest (${baseDir}/node_modules/axios-mock-adapter/src/handle_request.js:67:13)
+    at ${baseDir}/node_modules/axios-mock-adapter/src/index.js:26:9
+    at new Promise (<anonymous>)
+    at MockAdapter.<anonymous> (${baseDir}/node_modules/axios-mock-adapter/src/index.js:25:14)
+    at dispatchRequest (${baseDir}/node_modules/axios/lib/core/dispatchRequest.js:52:10)
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+```
+
 ## CONTRIBUTE
 
-Suggestions and MR's are welcome :) 
+Suggestions and MR's are welcome :)
+
+## Contributors
+<a href="https://github.com/new10com/axios-logger/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=new10com/axios-logger" />
+</a>
+
+Made with [contributors-img](https://contributors-img.web.app). 
