@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 12
       - name: "🕐 install"
-        run: npm ci
+        run: npm install
       - name: "🚦 lint&test"
         run: npm test:prod
       - name: "🏗 build"
