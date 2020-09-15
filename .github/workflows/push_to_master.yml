@@ -1,4 +1,4 @@
-name: ⚡️ Push to Master
+name: "⚡️ Push to Master"
 
 on:
   push:
@@ -8,15 +8,15 @@ jobs:
   check_master:
     runs-on: ubuntu-latest
     steps:
-      - name: 📚 checkout
+      - name: "📚 checkout"
         uses: actions/checkout@v2
-      - name: 🟢 node
+      - name: "🟢 node"
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: 🕐 install
+      - name: "🕐 install"
         run: npm ci
-      - name: 🚦 lint&test
+      - name: "🚦 lint&test"
         run: npm test:prod
-      - name: 🏗 build
+      - name: "🏗 build"
         run: npm run build
