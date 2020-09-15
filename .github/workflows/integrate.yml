@@ -18,5 +18,9 @@ jobs:
         run: npm install
       - name: "🚦 lint&test"
         run: npm run test:prod
+      - name: "🚥 Coveralls"
+          uses: coverallsapp/github-action@master
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🏗 build"
         run: npm run build
