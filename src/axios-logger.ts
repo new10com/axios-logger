@@ -1,6 +1,5 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import log4js, { Logger } from 'log4js'
-import { LogFn } from 'pino'
 
 interface Headers {
   [key: string]: string | object
@@ -9,6 +8,11 @@ interface Headers {
 interface HeaderRecord {
   key: string
   value: string | object
+}
+
+interface LogFn {
+  (msg: string, ...args: any[]): void;
+  (obj: object, msg?: string, ...args: any[]): void;
 }
 
 export const indent = '  '

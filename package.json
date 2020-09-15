@@ -1,5 +1,5 @@
 {
-  "name": "@new10/axios-logger",
+  "name": "@new10com/axios-logger",
   "version": "0.1.0",
   "description": "Library that should be used as axios request/response interceptor for logging in a pretty format request/response details",
   "keywords": [
@@ -18,13 +18,14 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=8.0.0"
+    "node": "12.x.x"
   },
   "scripts": {
     "lint": "$(yarn bin)/tslint --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc && $(yarn bin)/typedoc src",
     "test": "$(yarn bin)/nyc --reporter=lcov --reporter=text $(yarn bin)/mocha --require ts-node/register",
+    "build:prod": "yarn test:prod && build",
     "test:prod": "yarn lint && yarn test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",

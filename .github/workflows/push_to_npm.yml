@@ -1,0 +1,23 @@
+name: 🚀 Push to NPM
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📚checkout
+        uses: actions/checkout@v2
+      - name: 🟢 node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org
+      - name: 🏗 build
+        run: npm build:prod
+      - name: 🚀 publish
+        run: npm publish --access public
+        env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
