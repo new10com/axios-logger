@@ -1,7 +1,7 @@
 # Axios Logger
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Coveralls](https://img.shields.io/coveralls/alexjoverm/typescript-library-starter.svg)](https://coveralls.io/github/alexjoverm/typescript-library-starter)
+[![Coverage Status](https://coveralls.io/repos/github/new10com/axios-logger/badge.svg?branch=master)](https://coveralls.io/github/new10com/axios-logger?branch=master)
 
 > Beautify Axios Logging Messages.
 
