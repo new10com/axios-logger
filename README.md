@@ -30,7 +30,7 @@ instance.interceptors.request.use((config) => {
     axiosLogger.logRequest(config)
     return config
 })
-axios.get('https://jsonplaceholder.typicode.com/users')
+instance.get('https://jsonplaceholder.typicode.com/users')
 ```
 
 Request details will be logged this way:
@@ -87,7 +87,7 @@ instance.interceptors.response.use((response) => {
     axiosLogger.logResponse(response)
     return response
 })
-axios.get('https://jsonplaceholder.typicode.com/users')
+instance.get('https://jsonplaceholder.typicode.com/users')
 ````
 Logged response will look like this:
 ```
