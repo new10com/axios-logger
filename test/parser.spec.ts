@@ -41,6 +41,20 @@ ${indent}}`
         }
     }
 
+    @suite('Test URL parsing')
+    class URLParsingTestSuite extends Parser {
+        @params({config: { url: 'https://google.com', baseURL: ''} , expectedUrl: 'https://google.com'}, 'Url should be used if it has "://" and baseUrl is empty')
+        @params({config: { url: 'https://google.com', baseURL: 'https://go.com'} , expectedUrl: 'https://google.com'}, 'Url should be used if it has "://" and baseUrl is not empty')
+        @params({config: { url: 'entries', baseURL: 'https://google.com'} , expectedUrl: 'https://google.com/entries'}, 'BaseUrl should be used if url doesnt have "://"')
+        @params({config: { url: 'google.com', baseURL: ''} , expectedUrl: 'google.com'}, 'Both url and baseUrl are empty')
+        @params({config: { url: undefined, baseURL: undefined} , expectedUrl: ''}, 'Both url and baseUrl are undefined')
+        'Test URL Parsing'({ config, expectedUrl }) {
+            const url = this.parseUrl(config)
+            logger.info(`Url: ${url}`)
+            expect(url).to.equal(expectedUrl)
+        }
+    }
+
     @suite('Test Single Header Entry Pretty Formatting')
     class HeaderEntryPrettyFormatterTestSuite extends Parser {
         @params(
