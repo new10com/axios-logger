@@ -14,7 +14,7 @@ Basically This package is working as [Axios's interceptors](https://github.com/a
 ## Install
 
 ```
-$ npm install @new10/axios-logger --save-dev //WIP
+$ npm install @new10com/axios-logger
 ```
 
 ## How to use
@@ -206,7 +206,7 @@ Suggestions and MR's are welcome :)
 
 ## Contributors
 <a href="https://github.com/new10com/axios-logger/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=new10com/axios-logger" />
+  <img alt="" src="https://contributors-img.web.app/image?repo=new10com/axios-logger" />
 </a>
 
 Made with [contributors-img](https://contributors-img.web.app). 

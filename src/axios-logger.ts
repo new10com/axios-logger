@@ -2,7 +2,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import log4js, { Logger } from 'log4js'
 import { Parser } from './parser/parser'
 
-interface LogFn {
+export interface LogFn {
   (msg: string, ...args: any[]): void;
   (obj: object, msg?: string, ...args: any[]): void;
 }

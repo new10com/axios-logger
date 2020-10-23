@@ -3,8 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'ax
 import MockAdapter from 'axios-mock-adapter'
 import { expect } from 'chai'
 import log4js from 'log4js'
-import { LogFn } from 'pino'
-import { AxiosLogger } from '../src/axios-logger'
+import { AxiosLogger, LogFn } from '../src/axios-logger'
 import { logger } from '../src/logger/logger'
 
 describe('Axios Logger Test Suite', () => {
