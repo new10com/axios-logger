@@ -36,15 +36,30 @@ export class Parser {
             .join('\n')
     }
 
+    public parseUrl(requestConfig: AxiosRequestConfig): string {
+        const url = requestConfig.url === undefined ? '' : requestConfig.url
+        const baseURL = requestConfig.baseURL
+        if (url) {
+            if (url.includes("://")) {
+                return url
+            }
+            if (baseURL && !url.includes("://")) {
+                return `${baseURL}/${url}`
+            }
+        }
+        return url
+    }
+
     public parseRequest(request: AxiosRequestConfig): string {
         let requestDetailsArr
         const startOfRequest = Separator.startingLine('Request')
-        const url = `${Formatter.title('URL')}: ${request.url}`
+        const url = `${Formatter.title('URL')}: ${this.parseUrl(request)}`
         const method = `${Formatter.title(
             'Method',
         )}: @${(request.method as string).toUpperCase()}`
         const headersName = `${Formatter.title('Headers')}:`
-        const headers = this.parseHeaders(request.headers)
+        const baseUrl = request.baseURL
+        const headers = this.parseHeaders(request.headers, baseUrl)
         requestDetailsArr = [
             Separator.newLine(),
             startOfRequest,
@@ -64,14 +79,15 @@ export class Parser {
     public parseResponse(resp: AxiosResponse): string {
         let responseDetailsArr
         const startOfRequest = Separator.startingLine('Response')
-        const url = `${Formatter.title('URL')}: ${resp.config.url}`
+        const url = `${Formatter.title('URL')}: ${this.parseUrl(resp.config)}`
         const method = `${Formatter.title('Method')}: @${(resp.config
             .method as string).toUpperCase()}`
         const status = `${Formatter.title('Status')}: ${resp.status} \ ${
             resp.statusText
         }`
         const headersName = `${Formatter.title('Headers')}`
-        const headers = this.parseHeaders(resp.headers)
+        const baseUrl = resp.config.baseURL
+        const headers = this.parseHeaders(resp.headers, baseUrl)
         responseDetailsArr = [
             Separator.newLine(),
             startOfRequest,
@@ -89,11 +105,14 @@ export class Parser {
         return [...responseDetailsArr, body, Separator.endingLine()].join('\n')
     }
 
-    protected parseHeaders(headers: Headers): string {
+    protected parseHeaders(headers: Headers, baseUrl: string = ''): string {
         if (headers) {
             const commonHeaders = headers.common as Headers
             const mergedHeaders: Headers = { ...headers, ...commonHeaders }
             delete mergedHeaders.common
+            if (mergedHeaders['x-contentful-route'] && baseUrl) { // specific for contentful
+                mergedHeaders['x-contentful-route'] = `${baseUrl}${mergedHeaders['x-contentful-route']}`
+            }
             return this.transformHeadersToStringArr(mergedHeaders).join('\n')
         }
         return ''

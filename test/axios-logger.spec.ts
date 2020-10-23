@@ -1,5 +1,13 @@
 import { suite, test } from '@testdeck/mocha'
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios'
+import axios, {
+    AxiosAdapter,
+    AxiosBasicCredentials,
+    AxiosError, AxiosProxyConfig,
+    AxiosRequestConfig,
+    AxiosResponse,
+    AxiosTransformer, CancelToken,
+    Method, ResponseType,
+} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { expect } from 'chai'
 import log4js from 'log4js'
@@ -490,6 +498,74 @@ describe('Axios Logger Test Suite', () => {
                     expect(data).to.not.be.null
                     done()
                 })
+        }
+    }
+
+    @suite('Contentful Integration Test Suite')
+    class ContentfulIntegrationTest extends AxiosLogger {
+        @test 'I can see both request and response logged properly in real axios from contentful example'(
+            done,
+        ) {
+            const config = {
+                url: 'entries',
+                method: 'get' as Method,
+                baseURL: 'https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4',
+                headers: {
+                    common: {
+                        Accept: 'application/json, text/plain, */*',
+                    },
+                    delete: {},
+                    get: {},
+                    head: {},
+                    post: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    put: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    patch: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    'Content-Type': 'application/vnd.contentful.delivery.v1+json',
+                    'X-Contentful-User-Agent': 'sdk contentful.js/0.0.0-determined-by-semantic-release; platform node.js/v12.18.3; os macOS/19.6.0;',
+                    Authorization: 'Bearer <>',
+                    'user-agent': 'node.js/v12.18.3',
+                    'Accept-Encoding': 'gzip',
+                    'x-contentful-route': '/spaces/:space/environments/:environment/entries'
+                },
+                params: {
+                    content_type: 'drinkTag',
+                },
+                auth: undefined
+            }
+            let capturedMsg: string = ''
+            const loggerMock: LogFn = (
+                msg: string | object,
+                ...args: any[]
+            ): void => {
+                capturedMsg = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+                logger.info(capturedMsg)
+            }
+            const log4jsLogger = log4js.getLogger('axios')
+            log4jsLogger.info = loggerMock
+
+            const axiosLogger = AxiosLogger.using(log4jsLogger.info, log4jsLogger.error)
+            axiosLogger.logRequest(config)
+            const expectedMsg = `
+┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/entries
+  Method: @GET
+  Headers:
+  ├ Content-Type: "application/vnd.contentful.delivery.v1+json"
+  ├ X-Contentful-User-Agent: "sdk contentful.js/0.0.0-determined-by-semantic-release; platform node.js/v12.18.3; os macOS/19.6.0;"
+  ├ Authorization: "Bearer <>"
+  ├ user-agent: "node.js/v12.18.3"
+  ├ Accept-Encoding: "gzip"
+  ├ x-contentful-route: "https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/spaces/:space/environments/:environment/entries"
+  └ Accept: "application/json, text/plain, */*"
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+            expect(capturedMsg).to.equal(expectedMsg)
+            done()
         }
     }
 })
