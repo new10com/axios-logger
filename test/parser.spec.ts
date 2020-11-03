@@ -1,10 +1,10 @@
 import { params, suite } from '@testdeck/mocha'
 import { expect } from 'chai'
-import { indent } from '../src/constants/constants'
 import { logger } from '../src/logger/logger'
 import { Parser } from '../src/parser/parser'
 import { Formatter } from '../src/formatter/formatter'
-
+const formatter = new Formatter(Formatter.defaultConfig())
+const indent = formatter.indent()
 describe('Parser Test Suite', () => {
     @suite('Test Body Formatter')
     class BodyPrettyFormatterTestSuite extends Parser {
@@ -36,7 +36,7 @@ ${indent}}`
             'Body object as simple string'
         )
         'Test Pretty Formatting Of Body'({ body, expectedResult }) {
-            const formattedBody = Formatter.prettyFormatBody(body)
+            const formattedBody = formatter.prettyFormatBody(body)
             expect(formattedBody).to.equal(expectedResult)
         }
     }
@@ -100,7 +100,7 @@ ${indent}}`
                                                                  expectedResult
                                                              }) {
             expect(
-                Formatter.prettyHeaderEntry(headerEntry, isFirstElement, isLastElement)
+                formatter.prettyHeaderEntry(headerEntry, isFirstElement, isLastElement)
             ).to.eq(expectedResult)
         }
     }
@@ -168,6 +168,7 @@ ${indent}}`
             'Headers are undefined'
         )
         'Test headers parsing'({ headers, expectedResult }) {
+            this.setFormatter(formatter)
             const parsedHeader = this.parseHeaders(headers)
             logger.info(`Headers: \n${parsedHeader}`)
             expect(parsedHeader).to.equal(expectedResult)

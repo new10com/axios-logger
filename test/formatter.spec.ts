@@ -1,8 +1,8 @@
 import { params, suite } from '@testdeck/mocha'
 import { expect } from 'chai'
-import { indent } from '../src/constants/constants'
 import { Formatter } from '../src/formatter/formatter'
-
+const formatter = new Formatter(Formatter.defaultConfig())
+const indent = formatter.indent()
 describe('Formatter Test Suite', () => {
 
     @suite('Test Body Formatter')
@@ -35,7 +35,7 @@ ${indent}}`,
             'Body object as simple string',
         )
         'Test Pretty Formatting Of Body'({ body, expectedResult }) {
-            const formattedBody = Formatter.prettyFormatBody(body)
+            const formattedBody = formatter.prettyFormatBody(body)
             expect(formattedBody).to.equal(expectedResult)
         }
     }
@@ -85,7 +85,69 @@ ${indent}}`,
                                                                  expectedResult,
                                                              }) {
             expect(
-                Formatter.prettyHeaderEntry(headerEntry, isFirstElement, isLastElement),
+                formatter.prettyHeaderEntry(headerEntry, isFirstElement, isLastElement),
+            ).to.eq(expectedResult)
+        }
+    }
+
+    @suite('Test Indent Function')
+    class IndentFunctionUnitTest extends Formatter {
+        @params(
+            {
+                config: { indent: 2, indentChar: ' ' },
+                expectedResult: new Array<string>(2).fill(' ').join(''),
+            },
+            'Two spaces',
+        )
+        @params(
+            {
+                config: { indent: 4, indentChar: ' ' },
+                expectedResult: new Array<string>(4).fill(' ').join(''),
+            },
+            'Four spaces',
+        )
+        @params(
+            {
+                config: { indent: 2, indentChar: '\t' },
+                expectedResult: new Array<string>(2).fill('\t').join(''),
+            },
+            'Two tabs',
+        )
+        @params(
+            {
+                config: { indentChar: '\t' },
+                expectedResult: new Array<string>(2).fill('\t').join(''),
+            },
+            'Indent config param is missing',
+        )
+        @params(
+            {
+                config: { indent: 2 },
+                expectedResult: new Array<string>(2).fill(' ').join(''),
+            },
+            'IndentChar param is missing',
+        )
+        @params(
+            {
+                config: {},
+                expectedResult: new Array<string>(2).fill(' ').join(''),
+            },
+            'Config is empty',
+        )
+        @params(
+            {
+                config: undefined,
+                expectedResult: new Array<string>(2).fill(' ').join(''),
+            },
+            'Config is undefined',
+        )
+        'Test how indent function works'({
+                                             config,
+                                             expectedResult,
+                                         }) {
+            const formatter = new Formatter(config)
+            expect(
+                formatter.indent(),
             ).to.eq(expectedResult)
         }
     }
