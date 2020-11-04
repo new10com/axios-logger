@@ -1,7 +1,6 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import log4js, { Logger } from 'log4js'
 import { defaultConfig, IConfig } from './config/axiios-logger-config'
-import { Formatter } from './formatter/formatter'
 import { Parser } from './parser/parser'
 
 export interface LogFn {
@@ -43,7 +42,7 @@ export class AxiosLogger {
     this.logInfo = infoFn
     this.logError = errorFn
     this.config = config
-    this.parser = new Parser(new Formatter(this.config))
+    this.parser = new Parser(this.config)
   }
 
   public logRequest(request: AxiosRequestConfig): void {

@@ -1,4 +1,5 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { IConfig } from '../config/axiios-logger-config'
 import { Formatter, Headers } from '../formatter/formatter'
 import { Separator } from '../separator/separator'
 
@@ -16,10 +17,12 @@ export class Parser {
         'common',
     ]
 
-    private formatter: Formatter = new Formatter(Formatter.defaultConfig())
+    private formatter: Formatter
+    private config: IConfig
 
-    constructor(formatter: Formatter) {
-        this.formatter = formatter
+    constructor(config: IConfig) {
+        this.formatter = new Formatter(config)
+        this.config = config
     }
 
     public parseError(error: AxiosError, errorSource: ErrorSource): string {
@@ -64,15 +67,20 @@ export class Parser {
         const headersName = `${this.formatter.title('Headers')}:`
         const baseUrl = request.baseURL
         const headers = this.parseHeaders(request.headers, baseUrl)
-        requestDetailsArr = [
+        requestDetailsArr = this.config.request.shouldLogHeaders ? [
             Separator.newLine(),
             startOfRequest,
             url,
             method,
             headersName,
             headers,
+        ] : [
+            Separator.newLine(),
+            startOfRequest,
+            url,
+            method,
         ]
-        if (request.data) {
+        if (request.data && this.config.request.shouldLogBody) {
             const bodyTitle = `${this.formatter.title('Body')}:`
             const body = this.formatter.prettyFormatBody(request.data)
             requestDetailsArr = [...requestDetailsArr, bodyTitle, body]
@@ -92,7 +100,7 @@ export class Parser {
         const headersName = `${this.formatter.title('Headers')}`
         const baseUrl = resp.config.baseURL
         const headers = this.parseHeaders(resp.headers, baseUrl)
-        responseDetailsArr = [
+        responseDetailsArr = this.config.response.shouldLogHeaders ? [
             Separator.newLine(),
             startOfRequest,
             url,
@@ -100,13 +108,24 @@ export class Parser {
             status,
             headersName,
             headers,
-            `${this.formatter.title('Body')}:`,
+        ]: [
+            Separator.newLine(),
+            startOfRequest,
+            url,
+            method,
+            status,
         ]
-        let body = `${this.formatter.indent()}{}`
-        if (resp.data) {
-            body = this.formatter.prettyFormatBody(resp.data)
+
+        const emptyBody = `${this.formatter.indent()}{}`
+        if (resp.data && this.config.response.shouldLogBody) {
+            const body = this.formatter.prettyFormatBody(resp.data)
+            return [...responseDetailsArr,`${this.formatter.title('Body')}:`, body, Separator.endingLine()].join('\n')
+        } else if (this.config.response.shouldLogBody) {
+            return [...responseDetailsArr,`${this.formatter.title('Body')}:`, emptyBody, Separator.endingLine()].join('\n')
+        } else {
+            return [...responseDetailsArr, Separator.endingLine()].join('\n')
         }
-        return [...responseDetailsArr, body, Separator.endingLine()].join('\n')
+
     }
 
     // this method is created in order to enable unit testing of protected @parseHeaders method

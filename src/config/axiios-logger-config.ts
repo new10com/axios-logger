@@ -8,20 +8,20 @@ export interface IConfig {
 }
 
 export interface RequestConfig {
-    headers: boolean
-    body: boolean
+    shouldLogHeaders: boolean
+    shouldLogBody: boolean
 }
 
 export interface ResponseConfig {
-    headers: boolean
-    body: boolean
+    shouldLogHeaders: boolean
+    shouldLogBody: boolean
 }
 
 export function defaultConfig(): IConfig {
     return {
         indent: defaultIndent,
         indentChar: defaultIndentChar,
-        request: { headers: true, body: true },
-        response: { headers: true, body: true },
+        request: { shouldLogHeaders: true, shouldLogBody: true },
+        response: { shouldLogHeaders: true, shouldLogBody: true },
     }
 }
