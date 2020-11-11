@@ -11,6 +11,7 @@
       "test/**.spec.ts"
     ]
   },
+  "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
     "semicolon": false,
     "prettier": true,

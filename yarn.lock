@@ -3146,6 +3146,11 @@ deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
+deep-spread@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/deep-spread/-/deep-spread-1.3.1.tgz#74db4d1f98f56f4982e6af1ae1fe7af85e1ace32"
+  integrity sha512-FYM91iRu8ZTKRGGrAaPbZ/Cl+tyquUdi6gS7T4taVWQEXDDrA1nWpSN4tq4B2SdaIREKRkYborJHMsMcH8herg==
+
 default-require-extensions@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/default-require-extensions/-/default-require-extensions-3.0.0.tgz#e03f93aac9b2b6443fc52e5e4a37b3ad9ad8df96"
@@ -8117,6 +8122,13 @@ rechoir@^0.6.2:
   integrity sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   dependencies:
     resolve "^1.1.6"
+
+redact-object@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/redact-object/-/redact-object-3.0.1.tgz#325232841dda6da24df8020156fb9c0e2ceb828b"
+  integrity sha512-0SzTKMvQyrSjIwXq4RW+jo7nC/CaemsyYZahUj++ikzzxxfsRsr3+jQ6hHDkK5WHmmhCTqLtqcjqmxsmDITIpg==
+  dependencies:
+    lodash.isplainobject "^4.0.6"
 
 redent@^2.0.0:
   version "2.0.0"

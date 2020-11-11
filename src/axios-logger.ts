@@ -4,12 +4,11 @@ import { defaultConfig, IConfig } from './config/axiios-logger-config'
 import { Parser } from './parser/parser'
 
 export interface LogFn {
-  (msg: string, ...args: any[]): void;
-  (obj: object, msg?: string, ...args: any[]): void;
+  (msg: string, ...args: any[]): void
+  (obj: object, msg?: string, ...args: any[]): void
 }
 
 export class AxiosLogger {
-
   public static default(config: IConfig = defaultConfig()) {
     log4js.configure({
       appenders: {
@@ -19,17 +18,28 @@ export class AxiosLogger {
     })
     const log4jsLogger = log4js.getLogger('axios')
     return new AxiosLogger(
-        log4jsLogger.info.bind(log4jsLogger),
-        log4jsLogger.error.bind(log4jsLogger),
-        config
+      log4jsLogger.info.bind(log4jsLogger),
+      log4jsLogger.error.bind(log4jsLogger),
+      config
     )
   }
 
-  public static from(logger: Logger, config: IConfig = defaultConfig()): AxiosLogger {
-    return new AxiosLogger(logger.info.bind(logger), logger.error.bind(logger), config)
+  public static from(
+    logger: Logger,
+    config: IConfig = defaultConfig()
+  ): AxiosLogger {
+    return new AxiosLogger(
+      logger.info.bind(logger),
+      logger.error.bind(logger),
+      config
+    )
   }
 
-  public static using(infoFn: LogFn, errorFn: LogFn, config: IConfig = defaultConfig()) {
+  public static using(
+    infoFn: LogFn,
+    errorFn: LogFn,
+    config: IConfig = defaultConfig()
+  ) {
     return new AxiosLogger(infoFn.bind(infoFn), errorFn.bind(errorFn), config)
   }
 
@@ -38,7 +48,11 @@ export class AxiosLogger {
   private parser: Parser
   private readonly config: IConfig
 
-  constructor(infoFn: LogFn, errorFn: LogFn, config: IConfig = defaultConfig()) {
+  constructor(
+    infoFn: LogFn,
+    errorFn: LogFn,
+    config: IConfig = defaultConfig()
+  ) {
     this.logInfo = infoFn
     this.logError = errorFn
     this.config = config
@@ -57,15 +71,15 @@ export class AxiosLogger {
     const possibleError = err as AxiosError
     const parsedError = this.parser.parseError(err as AxiosError, 'Response')
     const parsedRequest = possibleError.config
-        ? this.parser.parseRequest(possibleError.config)
-        : ''
+      ? this.parser.parseRequest(possibleError.config)
+      : ''
     const parsedResponse = possibleError.response
-        ? this.parser.parseResponse(possibleError.response)
-        : ''
+      ? this.parser.parseResponse(possibleError.response)
+      : ''
     this.logError(
-        [parsedRequest, parsedResponse, parsedError]
-            .filter(el => el.length > 0)
-            .join('\n')
+      [parsedRequest, parsedResponse, parsedError]
+        .filter(el => el.length > 0)
+        .join('\n')
     )
   }
 }

@@ -58,22 +58,58 @@
 			<a href="classes/separator.html" class="tsd-kind-icon">Separator</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="interfaces/formatterconfig.html" class="tsd-kind-icon">Formatter<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="interfaces/headerrecord.html" class="tsd-kind-icon">Header<wbr>Record</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="interfaces/headers.html" class="tsd-kind-icon">Headers</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="interfaces/iconfig.html" class="tsd-kind-icon">IConfig</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="interfaces/logfn.html" class="tsd-kind-icon">Log<wbr>Fn</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/obfuscationconfig.html" class="tsd-kind-icon">Obfuscation<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/requestconfig.html" class="tsd-kind-icon">Request<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="interfaces/responseconfig.html" class="tsd-kind-icon">Response<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="globals.html#errorsource" class="tsd-kind-icon">Error<wbr>Source</a>
 		</li>
 		<li class=" tsd-kind-variable">
-			<a href="globals.html#indent" class="tsd-kind-icon">indent</a>
+			<a href="globals.html#default_indent" class="tsd-kind-icon">DEFAULT_<wbr>INDENT</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="globals.html#default_indent_char" class="tsd-kind-icon">DEFAULT_<wbr>INDENT_<wbr>CHAR</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="globals.html#default_redactable_keys" class="tsd-kind-icon">DEFAULT_<wbr>REDACTABLE_<wbr>KEYS</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="globals.html#env_redactable_keys" class="tsd-kind-icon">ENV_<wbr>REDACTABLE_<wbr>KEYS</a>
 		</li>
 		<li class=" tsd-kind-variable">
 			<a href="globals.html#logger" class="tsd-kind-icon">logger</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#defaultconfig" class="tsd-kind-icon">default<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#getredactablekeys" class="tsd-kind-icon">get<wbr>Redactable<wbr>Keys</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#obfuscate" class="tsd-kind-icon">obfuscate</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="globals.html#prepareconfig" class="tsd-kind-icon">prepare<wbr>Config</a>
 		</li>
 	</ul>
 </nav>
@@ -256,6 +292,53 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
     at MockAdapter.&lt;anonymous&gt; (<span class="hljs-variable">${baseDir}</span><span class="hljs-regexp">/node_modules/</span>axios-mock-adapter<span class="hljs-regexp">/src/i</span>ndex.js:<span class="hljs-number">25</span>:<span class="hljs-number">14</span>)
     at dispatchRequest (<span class="hljs-variable">${baseDir}</span><span class="hljs-regexp">/node_modules/</span>axios<span class="hljs-regexp">/lib/</span>core/dispatchRequest.js:<span class="hljs-number">52</span>:<span class="hljs-number">10</span>)
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`</code></pre>
+			<a href="#configuration" id="configuration" style="color: inherit; text-decoration: none;">
+				<h3>Configuration</h3>
+			</a>
+			<p>Axios Logger has several options that can be configured. Configuration has some default settings, but they can be easily overridden.  </p>
+			<a href="#indentation" id="indentation" style="color: inherit; text-decoration: none;">
+				<h2>Indentation</h2>
+			</a>
+			<p>If you would like to have a different indentation of the logs, then you can do it by passing config object: </p>
+			<pre><code class="language-typescript"><span class="hljs-keyword">const</span> config = {indent: <span class="hljs-number">4</span>, indentChar: <span class="hljs-string">&#x27;\t&#x27;</span>}
+<span class="hljs-keyword">const</span> logger = AxiosLogger.default()
+
+<span class="hljs-comment">// or you can use from method</span>
+<span class="hljs-keyword">const</span> log4jsLogger = log4js.getLogger(<span class="hljs-string">&#x27;axios&#x27;</span>)
+<span class="hljs-keyword">const</span> axiosLogger = AxiosLogger.from(log4jsLogger, config)</code></pre>
+			<a href="#obfuscation" id="obfuscation" style="color: inherit; text-decoration: none;">
+				<h2>Obfuscation</h2>
+			</a>
+			<p>In case when you don&#39;t want to log some confidential information, you would like to hide them and this is now possible in Axios Logger as well:</p>
+			<pre><code class="language-typescript"><span class="hljs-comment">// One way to specify list of &quot;confidential&quot; keys is to use environment variable</span>
+process.env.LOGGER_REDACTABLE_KEYS = [<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>]
+<span class="hljs-keyword">const</span> envObfuscation: IConfig = {obfuscation: {obfuscate: <span class="hljs-literal">true</span>}}
+<span class="hljs-keyword">const</span> envLogger = AxiosLogger.default(envObfuscation)
+
+<span class="hljs-comment">// Another way is to directly pass this list of confidential keys to config</span>
+<span class="hljs-keyword">const</span> config: IConfig = {obfuscation: {obfuscate: <span class="hljs-literal">true</span>, redactableKeys: [<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>]}}
+<span class="hljs-keyword">const</span> logger = AxiosLogger.default(config)</code></pre>
+			<a href="#filtering-level-of-logging-requestresponse-details" id="filtering-level-of-logging-requestresponse-details" style="color: inherit; text-decoration: none;">
+				<h2>Filtering level of logging request/response details</h2>
+			</a>
+			<p>In case you would like to reduce amount of details that are logged for request/response, you can disable logging headers of body for either request, response or both: </p>
+			<pre><code class="language-typescript"><span class="hljs-comment">// Request</span>
+<span class="hljs-comment">// If you want to disabled logging request headers</span>
+<span class="hljs-keyword">const</span> config = { request: { shouldLogHeaders: <span class="hljs-literal">false</span> } }
+<span class="hljs-comment">// If you want to ommit request headers and body</span>
+<span class="hljs-keyword">const</span> config = { request: { shouldLogHeaders: <span class="hljs-literal">false</span> , shouldLogBody: <span class="hljs-literal">false</span>} }
+
+<span class="hljs-comment">// Response</span>
+<span class="hljs-comment">// If you want to disabled logging response headers</span>
+<span class="hljs-keyword">const</span> config = { response: { shouldLogHeaders: <span class="hljs-literal">false</span> } }
+<span class="hljs-comment">// If you want to ommit response headers and body</span>
+<span class="hljs-keyword">const</span> config = { response: { shouldLogHeaders: <span class="hljs-literal">false</span> , shouldLogBody: <span class="hljs-literal">false</span>} }
+
+<span class="hljs-comment">// Request and Response</span>
+<span class="hljs-comment">// If you want to disabled logging request and response headers</span>
+<span class="hljs-keyword">const</span> config = { request: { shouldLogHeaders: <span class="hljs-literal">false</span> }, response: { shouldLogHeaders: <span class="hljs-literal">false</span> }  }
+<span class="hljs-comment">// If you want to ommit request+response headers and body</span>
+<span class="hljs-keyword">const</span> config = { request: { shouldLogHeaders: <span class="hljs-literal">false</span> , shouldLogBody: <span class="hljs-literal">false</span>}, response: { shouldLogHeaders: <span class="hljs-literal">false</span> , shouldLogBody: <span class="hljs-literal">false</span>} }</code></pre>
 			<a href="#contribute" id="contribute" style="color: inherit; text-decoration: none;">
 				<h2>CONTRIBUTE</h2>
 			</a>
@@ -285,9 +368,14 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 					<section class="tsd-index-section ">
 						<h3>Interfaces</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-interface"><a href="interfaces/formatterconfig.html" class="tsd-kind-icon">Formatter<wbr>Config</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/headerrecord.html" class="tsd-kind-icon">Header<wbr>Record</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/headers.html" class="tsd-kind-icon">Headers</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/iconfig.html" class="tsd-kind-icon">IConfig</a></li>
 							<li class="tsd-kind-interface"><a href="interfaces/logfn.html" class="tsd-kind-icon">Log<wbr>Fn</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/obfuscationconfig.html" class="tsd-kind-icon">Obfuscation<wbr>Config</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/requestconfig.html" class="tsd-kind-icon">Request<wbr>Config</a></li>
+							<li class="tsd-kind-interface"><a href="interfaces/responseconfig.html" class="tsd-kind-icon">Response<wbr>Config</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
@@ -299,8 +387,20 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 					<section class="tsd-index-section ">
 						<h3>Variables</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-variable"><a href="globals.html#indent" class="tsd-kind-icon">indent</a></li>
+							<li class="tsd-kind-variable"><a href="globals.html#default_indent" class="tsd-kind-icon">DEFAULT_<wbr>INDENT</a></li>
+							<li class="tsd-kind-variable"><a href="globals.html#default_indent_char" class="tsd-kind-icon">DEFAULT_<wbr>INDENT_<wbr>CHAR</a></li>
+							<li class="tsd-kind-variable"><a href="globals.html#default_redactable_keys" class="tsd-kind-icon">DEFAULT_<wbr>REDACTABLE_<wbr>KEYS</a></li>
+							<li class="tsd-kind-variable"><a href="globals.html#env_redactable_keys" class="tsd-kind-icon">ENV_<wbr>REDACTABLE_<wbr>KEYS</a></li>
 							<li class="tsd-kind-variable"><a href="globals.html#logger" class="tsd-kind-icon">logger</a></li>
+						</ul>
+					</section>
+					<section class="tsd-index-section ">
+						<h3>Functions</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-function"><a href="globals.html#defaultconfig" class="tsd-kind-icon">default<wbr>Config</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#getredactablekeys" class="tsd-kind-icon">get<wbr>Redactable<wbr>Keys</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#obfuscate" class="tsd-kind-icon">obfuscate</a></li>
+							<li class="tsd-kind-function"><a href="globals.html#prepareconfig" class="tsd-kind-icon">prepare<wbr>Config</a></li>
 						</ul>
 					</section>
 				</div>
@@ -314,7 +414,7 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 				<div class="tsd-signature tsd-kind-icon">Error<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"Request"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"Response"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L6">parser/parser.ts:6</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L7">parser/parser.ts:7</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -322,12 +422,42 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Variables</h2>
 			<section class="tsd-panel tsd-member tsd-kind-variable">
-				<a name="indent" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagConst">Const</span> indent</h3>
-				<div class="tsd-signature tsd-kind-icon">indent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"  "</span><span class="tsd-signature-symbol"> = &quot;  &quot;</span></div>
+				<a name="default_indent" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>INDENT</h3>
+				<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>INDENT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2</span><span class="tsd-signature-symbol"> = 2</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/constants/constants.ts#L1">constants/constants.ts:1</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/constants/constants.ts#L1">constants/constants.ts:1</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable">
+				<a name="default_indent_char" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>INDENT_<wbr>CHAR</h3>
+				<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>INDENT_<wbr>CHAR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">" "</span><span class="tsd-signature-symbol"> = &quot; &quot;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/constants/constants.ts#L2">constants/constants.ts:2</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable">
+				<a name="default_redactable_keys" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>REDACTABLE_<wbr>KEYS</h3>
+				<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>REDACTABLE_<wbr>KEYS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&#x27;apiKey&#x27;,&#x27;authorization&#x27;,&#x27;Authorization&#x27;,&#x27;accessToken&#x27;,&#x27;idToken&#x27;,&#x27;password&#x27;,&#x27;refreshToken&#x27;,&#x27;token&#x27;,...(process.env.LOGGER_EXTRA_REDACTABLE_KEYS || &#x27;&#x27;).split(&#x27;,&#x27;).filter(Boolean),]</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/constants/constants.ts#L3">constants/constants.ts:3</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-variable">
+				<a name="env_redactable_keys" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagConst">Const</span> ENV_<wbr>REDACTABLE_<wbr>KEYS</h3>
+				<div class="tsd-signature tsd-kind-icon">ENV_<wbr>REDACTABLE_<wbr>KEYS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = (process.env.LOGGER_REDACTABLE_KEYS || &#x27;&#x27;).split(&#x27;,&#x27;).filter(Boolean)</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/obfuscator/obfuscator.ts#L5">obfuscator/obfuscator.ts:5</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -337,9 +467,101 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 				<div class="tsd-signature tsd-kind-icon">logger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Logger</span><span class="tsd-signature-symbol"> = log4js.getLogger(&#x27;axios&#x27;)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/logger/logger.ts#L3">logger/logger.ts:3</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/logger/logger.ts#L3">logger/logger.ts:3</a></li>
 					</ul>
 				</aside>
+			</section>
+		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Functions</h2>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="defaultconfig" class="tsd-anchor"></a>
+				<h3>default<wbr>Config</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">default<wbr>Config<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/config/axiios-logger-config.ts#L27">config/axiios-logger-config.ts:27</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="getredactablekeys" class="tsd-anchor"></a>
+				<h3>get<wbr>Redactable<wbr>Keys</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">get<wbr>Redactable<wbr>Keys<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/obfuscator/obfuscator.ts#L7">obfuscator/obfuscator.ts:7</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="obfuscate" class="tsd-anchor"></a>
+				<h3>obfuscate</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">obfuscate<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, config<span class="tsd-signature-symbol">: </span><a href="interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/obfuscator/obfuscator.ts#L12">obfuscator/obfuscator.ts:12</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>obj: <span class="tsd-signature-type">object</span></h5>
+							</li>
+							<li>
+								<h5>config: <a href="interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-function">
+				<a name="prepareconfig" class="tsd-anchor"></a>
+				<h3>prepare<wbr>Config</h3>
+				<ul class="tsd-signatures tsd-kind-function">
+					<li class="tsd-signature tsd-kind-icon">prepare<wbr>Config<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/config/axiios-logger-config.ts#L37">config/axiios-logger-config.ts:37</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></h4>
+					</li>
+				</ul>
 			</section>
 		</section>
 		<footer class="with-border-bottom">
@@ -355,10 +577,11 @@ instance.interceptors.response.use(<span class="hljs-function">(<span class="hlj
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 					</ul>
 					<ul class="tsd-legend">
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

@@ -595,13 +595,13 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Default config'
+        'Default config',
     )
     @params(
         {
-            config: {...defaultConfig(), request: {...defaultConfig().request, shouldLogBody: false}},
+            config: { request: { shouldLogBody: false } },
             expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
@@ -624,13 +624,13 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Do not log request body'
+        'Do not log request body',
     )
     @params(
         {
-            config: {...defaultConfig(), request: {...defaultConfig().request, shouldLogHeaders: false}},
+            config: { request: { shouldLogHeaders: false } },
             expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
@@ -653,13 +653,13 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Do not log request headers'
+        'Do not log request headers',
     )
     @params(
         {
-            config: {...defaultConfig(), response: {...defaultConfig().response, shouldLogBody: false}},
+            config: { response: { shouldLogBody: false } },
             expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
@@ -682,13 +682,13 @@ class AxiosConfigurationTest extends AxiosLogger {
   ┌
   ├ Content-Type: "application/json"
   └
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Do not log response body'
+        'Do not log response body',
     )
     @params(
         {
-            config: {...defaultConfig(), response: {...defaultConfig().response, shouldLogHeaders: false}},
+            config: { response: { shouldLogHeaders: false } },
             expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
@@ -711,13 +711,16 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Do not log response headers'
+        'Do not log response headers',
     )
     @params(
         {
-            config: {...defaultConfig(), request: {shouldLogHeaders: false, shouldLogBody: false}, response: {shouldLogHeaders: false, shouldLogBody: false}},
+            config: {
+                request: { shouldLogHeaders: false, shouldLogBody: false },
+                response: { shouldLogHeaders: false, shouldLogBody: false },
+            },
             expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
@@ -728,11 +731,11 @@ class AxiosConfigurationTest extends AxiosLogger {
   URL: https://doodle.com
   Method: @POST
   Status: 200  SUCCESS
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
         },
-        'Do not log request/response body and headers'
+        'Do not log request/response body and headers',
     )
-    'Test Request Response details logging with configuration'({config, expectedLog}) {
+    'Test Request Response details logging with configuration'({ config, expectedLog }) {
         let messages: Array<string> = []
         const loggerMock: LogFn = (
             msg: string | object,
