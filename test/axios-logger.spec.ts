@@ -420,8 +420,15 @@ describe('Axios Logger Test Suite', () => {
     at MockAdapter.<anonymous> (${baseDir}/node_modules/axios-mock-adapter/src/index.js:25:14)
     at dispatchRequest (${baseDir}/node_modules/axios/lib/core/dispatchRequest.js:52:10)
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-                expect(obj).to.equal(expectedMessage)
-                logger.error(obj)
+                if (typeof obj === 'string') {
+                    // we need to remove stack trace, cuz on CI we get unstable results since node versions differ a bit
+                    const expectedMsg = expectedMessage.replace(/\sat.*\n/gm, '')
+                    const actualMsg = obj.replace(/\sat.*\n/gm, '')
+                    expect(actualMsg).to.equal(expectedMsg)
+                } else {
+                    expect(obj).to.equal(expectedMessage)
+                    logger.error(obj)
+                }
             }
             const axiosLogger = new AxiosLogger(infoLogMock, errorLogMock)
             const instance = axios.create()
