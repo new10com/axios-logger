@@ -220,7 +220,7 @@ const axiosLogger = AxiosLogger.from(log4jsLogger, config)
 In case when you don't want to log some confidential information, you would like to hide them and this is now possible in Axios Logger as well:
 ```typescript
 // One way to specify list of "confidential" keys is to use environment variable
-process.env.LOGGER_REDACTABLE_KEYS = ['username', 'password']
+process.env.LOGGER_REDACTABLE_KEYS = 'username,password'
 const envObfuscation: IConfig = {obfuscation: {obfuscate: true}}
 const envLogger = AxiosLogger.default(envObfuscation)
 

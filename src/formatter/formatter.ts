@@ -34,12 +34,17 @@ export class Formatter {
     const indent = this.indent()
     switch (typeof body) {
       case 'string':
-        if (body.charAt(0) === '{') {
-          bodyAsString = indent + JSON.stringify(JSON.parse(body), null, '\t')
-        } else {
-          bodyAsString = indent + body
+        try {
+          if (body.charAt(0) === '{') {
+            bodyAsString = indent + JSON.stringify(JSON.parse(body), null, '\t')
+          } else {
+            bodyAsString = indent + body
+          }
+          break
+        } catch (e) {
+          bodyAsString = body
+          break
         }
-        break
       case 'object':
         bodyAsString = indent + JSON.stringify(body, null, '\t')
         break
