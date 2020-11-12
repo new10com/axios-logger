@@ -51,6 +51,9 @@
 				<li class=" tsd-kind-constructor tsd-parent-kind-class">
 					<a href="axioslogger.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="axioslogger.html#config" class="tsd-kind-icon">config</a>
+				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a href="axioslogger.html#logerror" class="tsd-kind-icon">log<wbr>Error</a>
 				</li>
@@ -90,22 +93,58 @@
 			<a href="separator.html" class="tsd-kind-icon">Separator</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="../interfaces/formatterconfig.html" class="tsd-kind-icon">Formatter<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="../interfaces/headerrecord.html" class="tsd-kind-icon">Header<wbr>Record</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/headers.html" class="tsd-kind-icon">Headers</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="../interfaces/iconfig.html" class="tsd-kind-icon">IConfig</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="../interfaces/logfn.html" class="tsd-kind-icon">Log<wbr>Fn</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/obfuscationconfig.html" class="tsd-kind-icon">Obfuscation<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/requestconfig.html" class="tsd-kind-icon">Request<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/responseconfig.html" class="tsd-kind-icon">Response<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#errorsource" class="tsd-kind-icon">Error<wbr>Source</a>
 		</li>
 		<li class=" tsd-kind-variable">
-			<a href="../globals.html#indent" class="tsd-kind-icon">indent</a>
+			<a href="../globals.html#default_indent" class="tsd-kind-icon">DEFAULT_<wbr>INDENT</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#default_indent_char" class="tsd-kind-icon">DEFAULT_<wbr>INDENT_<wbr>CHAR</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#default_redactable_keys" class="tsd-kind-icon">DEFAULT_<wbr>REDACTABLE_<wbr>KEYS</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#env_redactable_keys" class="tsd-kind-icon">ENV_<wbr>REDACTABLE_<wbr>KEYS</a>
 		</li>
 		<li class=" tsd-kind-variable">
 			<a href="../globals.html#logger" class="tsd-kind-icon">logger</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#defaultconfig" class="tsd-kind-icon">default<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#getredactablekeys" class="tsd-kind-icon">get<wbr>Redactable<wbr>Keys</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#obfuscate" class="tsd-kind-icon">obfuscate</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#prepareconfig" class="tsd-kind-icon">prepare<wbr>Config</a>
 		</li>
 	</ul>
 </nav>
@@ -132,6 +171,7 @@
 					<section class="tsd-index-section tsd-is-private-protected">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="axioslogger.html#config" class="tsd-kind-icon">config</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="axioslogger.html#logerror" class="tsd-kind-icon">log<wbr>Error</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="axioslogger.html#loginfo" class="tsd-kind-icon">log<wbr>Info</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="axioslogger.html#parser" class="tsd-kind-icon">parser</a></li>
@@ -157,13 +197,13 @@
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Axios<wbr>Logger<span class="tsd-signature-symbol">(</span>infoFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, errorFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Axios<wbr>Logger<span class="tsd-signature-symbol">(</span>infoFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, errorFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L36">axios-logger.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L39">axios-logger.ts:39</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,6 +214,9 @@
 							<li>
 								<h5>errorFn: <a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a></h5>
 							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol"> = defaultConfig()</span></h5>
+							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></h4>
 					</li>
@@ -182,13 +225,23 @@
 		</section>
 		<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="config" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> config</h3>
+				<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L39">axios-logger.ts:39</a></li>
+					</ul>
+				</aside>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 				<a name="logerror" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagProtected">Protected</span> log<wbr>Error</h3>
 				<div class="tsd-signature tsd-kind-icon">log<wbr>Error<span class="tsd-signature-symbol">:</span> <a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L35">axios-logger.ts:35</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L37">axios-logger.ts:37</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -198,7 +251,7 @@
 				<div class="tsd-signature tsd-kind-icon">log<wbr>Info<span class="tsd-signature-symbol">:</span> <a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L34">axios-logger.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L36">axios-logger.ts:36</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -208,7 +261,7 @@
 				<div class="tsd-signature tsd-kind-icon">parser<span class="tsd-signature-symbol">:</span> <a href="parser.html" class="tsd-signature-type">Parser</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L36">axios-logger.ts:36</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L38">axios-logger.ts:38</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -225,7 +278,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L52">axios-logger.ts:52</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L56">axios-logger.ts:56</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -248,7 +301,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L44">axios-logger.ts:44</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L48">axios-logger.ts:48</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -271,7 +324,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L48">axios-logger.ts:48</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L52">axios-logger.ts:52</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -288,15 +341,21 @@
 				<a name="default" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagStatic">Static</span> default</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
+					<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L12">axios-logger.ts:12</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L13">axios-logger.ts:13</a></li>
 							</ul>
 						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol"> = defaultConfig()</span></h5>
+							</li>
+						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></h4>
 					</li>
 				</ul>
@@ -305,19 +364,22 @@
 				<a name="from" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagStatic">Static</span> from</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<li class="tsd-signature tsd-kind-icon">from<span class="tsd-signature-symbol">(</span>logger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Logger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
+					<li class="tsd-signature tsd-kind-icon">from<span class="tsd-signature-symbol">(</span>logger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Logger</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L26">axios-logger.ts:26</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L28">axios-logger.ts:28</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
 								<h5>logger: <span class="tsd-signature-type">Logger</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol"> = defaultConfig()</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></h4>
@@ -328,13 +390,13 @@
 				<a name="using" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagStatic">Static</span> using</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<li class="tsd-signature tsd-kind-icon">using<span class="tsd-signature-symbol">(</span>infoFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, errorFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
+					<li class="tsd-signature tsd-kind-icon">using<span class="tsd-signature-symbol">(</span>infoFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, errorFn<span class="tsd-signature-symbol">: </span><a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/axios-logger.ts#L30">axios-logger.ts:30</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/axios-logger.ts#L32">axios-logger.ts:32</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,6 +406,9 @@
 							</li>
 							<li>
 								<h5>errorFn: <a href="../interfaces/logfn.html" class="tsd-signature-type">LogFn</a></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol"> = defaultConfig()</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="axioslogger.html" class="tsd-signature-type">AxiosLogger</a></h4>
@@ -364,10 +429,11 @@
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 					</ul>
 					<ul class="tsd-legend">
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

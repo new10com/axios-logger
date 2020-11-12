@@ -54,8 +54,20 @@
 		<li class="current tsd-kind-class">
 			<a href="parser.html" class="tsd-kind-icon">Parser</a>
 			<ul>
+				<li class=" tsd-kind-constructor tsd-parent-kind-class">
+					<a href="parser.html#constructor" class="tsd-kind-icon">constructor</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="parser.html#config" class="tsd-kind-icon">config</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="parser.html#formatter" class="tsd-kind-icon">formatter</a>
+				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a href="parser.html#ignoreheaderkeys" class="tsd-kind-icon">ignore<wbr>Header<wbr>Keys</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a href="parser.html#parsebodydetails" class="tsd-kind-icon">parse<wbr>Body<wbr>Details</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="parser.html#parseerror" class="tsd-kind-icon">parse<wbr>Error</a>
@@ -69,13 +81,28 @@
 				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="parser.html#parseresponse" class="tsd-kind-icon">parse<wbr>Response</a>
 				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="parser.html#parseurl" class="tsd-kind-icon">parse<wbr>Url</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a href="parser.html#setconfig" class="tsd-kind-icon">set<wbr>Config</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a href="parser.html#setformatter" class="tsd-kind-icon">set<wbr>Formatter</a>
+				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a href="parser.html#transformheaderstostringarr" class="tsd-kind-icon">transform<wbr>Headers<wbr>ToString<wbr>Arr</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a href="parser.html#preparebodyforformatting" class="tsd-kind-icon">prepare<wbr>Body<wbr>For<wbr>Formatting</a>
 				</li>
 			</ul>
 		</li>
 		<li class=" tsd-kind-class">
 			<a href="separator.html" class="tsd-kind-icon">Separator</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/formatterconfig.html" class="tsd-kind-icon">Formatter<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-interface">
 			<a href="../interfaces/headerrecord.html" class="tsd-kind-icon">Header<wbr>Record</a>
@@ -84,16 +111,49 @@
 			<a href="../interfaces/headers.html" class="tsd-kind-icon">Headers</a>
 		</li>
 		<li class=" tsd-kind-interface">
+			<a href="../interfaces/iconfig.html" class="tsd-kind-icon">IConfig</a>
+		</li>
+		<li class=" tsd-kind-interface">
 			<a href="../interfaces/logfn.html" class="tsd-kind-icon">Log<wbr>Fn</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/obfuscationconfig.html" class="tsd-kind-icon">Obfuscation<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/requestconfig.html" class="tsd-kind-icon">Request<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-interface">
+			<a href="../interfaces/responseconfig.html" class="tsd-kind-icon">Response<wbr>Config</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#errorsource" class="tsd-kind-icon">Error<wbr>Source</a>
 		</li>
 		<li class=" tsd-kind-variable">
-			<a href="../globals.html#indent" class="tsd-kind-icon">indent</a>
+			<a href="../globals.html#default_indent" class="tsd-kind-icon">DEFAULT_<wbr>INDENT</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#default_indent_char" class="tsd-kind-icon">DEFAULT_<wbr>INDENT_<wbr>CHAR</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#default_redactable_keys" class="tsd-kind-icon">DEFAULT_<wbr>REDACTABLE_<wbr>KEYS</a>
+		</li>
+		<li class=" tsd-kind-variable">
+			<a href="../globals.html#env_redactable_keys" class="tsd-kind-icon">ENV_<wbr>REDACTABLE_<wbr>KEYS</a>
 		</li>
 		<li class=" tsd-kind-variable">
 			<a href="../globals.html#logger" class="tsd-kind-icon">logger</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#defaultconfig" class="tsd-kind-icon">default<wbr>Config</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#getredactablekeys" class="tsd-kind-icon">get<wbr>Redactable<wbr>Keys</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#obfuscate" class="tsd-kind-icon">obfuscate</a>
+		</li>
+		<li class=" tsd-kind-function">
+			<a href="../globals.html#prepareconfig" class="tsd-kind-icon">prepare<wbr>Config</a>
 		</li>
 	</ul>
 </nav>
@@ -111,40 +171,133 @@
 			<h2>Index</h2>
 			<section class="tsd-panel tsd-index-panel">
 				<div class="tsd-index-content">
+					<section class="tsd-index-section ">
+						<h3>Constructors</h3>
+						<ul class="tsd-index-list">
+							<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="parser.html#constructor" class="tsd-kind-icon">constructor</a></li>
+						</ul>
+					</section>
 					<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="parser.html#config" class="tsd-kind-icon">config</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="parser.html#formatter" class="tsd-kind-icon">formatter</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="parser.html#ignoreheaderkeys" class="tsd-kind-icon">ignore<wbr>Header<wbr>Keys</a></li>
 						</ul>
 					</section>
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="parser.html#parsebodydetails" class="tsd-kind-icon">parse<wbr>Body<wbr>Details</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="parser.html#parseerror" class="tsd-kind-icon">parse<wbr>Error</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="parser.html#parseheaders" class="tsd-kind-icon">parse<wbr>Headers</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="parser.html#parserequest" class="tsd-kind-icon">parse<wbr>Request</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="parser.html#parseresponse" class="tsd-kind-icon">parse<wbr>Response</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="parser.html#parseurl" class="tsd-kind-icon">parse<wbr>Url</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="parser.html#setconfig" class="tsd-kind-icon">set<wbr>Config</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="parser.html#setformatter" class="tsd-kind-icon">set<wbr>Formatter</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="parser.html#transformheaderstostringarr" class="tsd-kind-icon">transform<wbr>Headers<wbr>ToString<wbr>Arr</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="parser.html#preparebodyforformatting" class="tsd-kind-icon">prepare<wbr>Body<wbr>For<wbr>Formatting</a></li>
 						</ul>
 					</section>
 				</div>
 			</section>
 		</section>
+		<section class="tsd-panel-group tsd-member-group ">
+			<h2>Constructors</h2>
+			<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<a name="constructor" class="tsd-anchor"></a>
+				<h3>constructor</h3>
+				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Parser<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="parser.html" class="tsd-signature-type">Parser</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L39">parser/parser.ts:39</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="parser.html" class="tsd-signature-type">Parser</a></h4>
+					</li>
+				</ul>
+			</section>
+		</section>
 		<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 			<h2>Properties</h2>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="config" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> config</h3>
+				<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L39">parser/parser.ts:39</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="formatter" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> formatter</h3>
+				<div class="tsd-signature tsd-kind-icon">formatter<span class="tsd-signature-symbol">:</span> <a href="formatter.html" class="tsd-signature-type">Formatter</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L38">parser/parser.ts:38</a></li>
+					</ul>
+				</aside>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 				<a name="ignoreheaderkeys" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagPrivate">Private</span> ignore<wbr>Header<wbr>Keys</h3>
 				<div class="tsd-signature tsd-kind-icon">ignore<wbr>Header<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [&#x27;get&#x27;,&#x27;delete&#x27;,&#x27;post&#x27;,&#x27;patch&#x27;,&#x27;put&#x27;,&#x27;head&#x27;,&#x27;common&#x27;,]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L10">parser/parser.ts:10</a></li>
+						<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L28">parser/parser.ts:28</a></li>
 					</ul>
 				</aside>
 			</section>
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<a name="parsebodydetails" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> parse<wbr>Body<wbr>Details</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<li class="tsd-signature tsd-kind-icon">parse<wbr>Body<wbr>Details<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AxiosRequestConfig</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>bodyTitle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L193">parser/parser.ts:193</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>request: <span class="tsd-signature-type">AxiosRequestConfig</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>bodyTitle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>body<wbr>Title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="parseerror" class="tsd-anchor"></a>
 				<h3>parse<wbr>Error</h3>
@@ -155,7 +308,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L21">parser/parser.ts:21</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L46">parser/parser.ts:46</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -175,19 +328,22 @@
 				<a name="parseheaders" class="tsd-anchor"></a>
 				<h3><span class="tsd-flag ts-flagProtected">Protected</span> parse<wbr>Headers</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<li class="tsd-signature tsd-kind-icon">parse<wbr>Headers<span class="tsd-signature-symbol">(</span>headers<span class="tsd-signature-symbol">: </span><a href="../interfaces/headers.html" class="tsd-signature-type">Headers</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					<li class="tsd-signature tsd-kind-icon">parse<wbr>Headers<span class="tsd-signature-symbol">(</span>headers<span class="tsd-signature-symbol">: </span><a href="../interfaces/headers.html" class="tsd-signature-type">Headers</a>, baseUrl<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L92">parser/parser.ts:92</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L158">parser/parser.ts:158</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
 								<h5>headers: <a href="../interfaces/headers.html" class="tsd-signature-type">Headers</a></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> baseUrl: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -204,7 +360,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L39">parser/parser.ts:39</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L78">parser/parser.ts:78</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -227,7 +383,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L64">parser/parser.ts:64</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L108">parser/parser.ts:108</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -237,6 +393,75 @@
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="parseurl" class="tsd-anchor"></a>
+				<h3>parse<wbr>Url</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">parse<wbr>Url<span class="tsd-signature-symbol">(</span>requestConfig<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AxiosRequestConfig</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L64">parser/parser.ts:64</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>requestConfig: <span class="tsd-signature-type">AxiosRequestConfig</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<a name="setconfig" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Config</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Config<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L154">parser/parser.ts:154</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>config: <a href="../interfaces/iconfig.html" class="tsd-signature-type">IConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<a name="setformatter" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Formatter</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Formatter<span class="tsd-signature-symbol">(</span>formatter<span class="tsd-signature-symbol">: </span><a href="formatter.html" class="tsd-signature-type">Formatter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L149">parser/parser.ts:149</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>formatter: <a href="formatter.html" class="tsd-signature-type">Formatter</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -250,7 +475,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/60db8f5/src/parser/parser.ts#L102">parser/parser.ts:102</a></li>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L176">parser/parser.ts:176</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -260,6 +485,32 @@
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+				<a name="preparebodyforformatting" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> prepare<wbr>Body<wbr>For<wbr>Formatting</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<li class="tsd-signature tsd-kind-icon">prepare<wbr>Body<wbr>For<wbr>Formatting<span class="tsd-signature-symbol">(</span>body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/new10com/axios-logger/blob/4b65ab0/src/parser/parser.ts#L11">parser/parser.ts:11</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>body: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/obfuscationconfig.html" class="tsd-signature-type">ObfuscationConfig</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -277,10 +528,11 @@
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 					</ul>
 					<ul class="tsd-legend">
-						<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+						<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 					</ul>
 					<ul class="tsd-legend">
 						<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>

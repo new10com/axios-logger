@@ -200,6 +200,57 @@ In case of error, you gonna get logged `request`, `response` and `error` all tog
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
 ```
 
+### Configuration
+
+Axios Logger has several options that can be configured. Configuration has some default settings, but they can be easily overridden.  
+
+## Indentation
+
+If you would like to have a different indentation of the logs, then you can do it by passing config object: 
+```typescript
+const config = {indent: 4, indentChar: '\t'}
+const logger = AxiosLogger.default()
+
+// or you can use from method
+const log4jsLogger = log4js.getLogger('axios')
+const axiosLogger = AxiosLogger.from(log4jsLogger, config)
+```
+
+## Obfuscation
+In case when you don't want to log some confidential information, you would like to hide them and this is now possible in Axios Logger as well:
+```typescript
+// One way to specify list of "confidential" keys is to use environment variable
+process.env.LOGGER_REDACTABLE_KEYS = 'username,password'
+const envObfuscation: IConfig = {obfuscation: {obfuscate: true}}
+const envLogger = AxiosLogger.default(envObfuscation)
+
+// Another way is to directly pass this list of confidential keys to config
+const config: IConfig = {obfuscation: {obfuscate: true, redactableKeys: ['username', 'password']}}
+const logger = AxiosLogger.default(config)
+```
+
+## Filtering level of logging request/response details
+In case you would like to reduce amount of details that are logged for request/response, you can disable logging headers of body for either request, response or both: 
+```typescript
+// Request
+// If you want to disabled logging request headers
+const config = { request: { shouldLogHeaders: false } }
+// If you want to ommit request headers and body
+const config = { request: { shouldLogHeaders: false , shouldLogBody: false} }
+
+// Response
+// If you want to disabled logging response headers
+const config = { response: { shouldLogHeaders: false } }
+// If you want to ommit response headers and body
+const config = { response: { shouldLogHeaders: false , shouldLogBody: false} }
+
+// Request and Response
+// If you want to disabled logging request and response headers
+const config = { request: { shouldLogHeaders: false }, response: { shouldLogHeaders: false }  }
+// If you want to ommit request+response headers and body
+const config = { request: { shouldLogHeaders: false , shouldLogBody: false}, response: { shouldLogHeaders: false , shouldLogBody: false} }
+```
+
 ## CONTRIBUTE
 
 Suggestions and MR's are welcome :)
