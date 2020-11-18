@@ -11,7 +11,10 @@
   "files": [
     "dist"
   ],
-  "author": "andrew.zakordonets@new10.com",
+  "author": {
+    "name": "Andrew Zakordonets",
+    "email": "andrew.zakordonets@new10.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/new10com/axios-logger"
