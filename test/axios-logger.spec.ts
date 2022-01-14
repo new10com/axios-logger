@@ -347,7 +347,7 @@ describe('Axios Logger Test Suite', () => {
   Code: ECONNREFUSED
   Message: @connect ECONNREFUSED 127.0.0.1:80
   StackTrace: @Error: connect ECONNREFUSED 127.0.0.1:80
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1134:16)
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`.replace(
           /net\.js:\d*:\d*/gi,
           '1'
