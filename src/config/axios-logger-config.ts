@@ -1,4 +1,5 @@
 import { deepSpread } from 'deep-spread'
+
 import {
   DEFAULT_INDENT,
   DEFAULT_INDENT_CHAR,

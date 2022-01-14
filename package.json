@@ -20,23 +20,20 @@
     "url": "https://github.com/new10com/axios-logger"
   },
   "license": "MIT",
-  "engines": {
-    "node": "12.x.x"
-  },
   "scripts": {
-    "lint": "$(yarn bin)/tslint --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "$(npm bin)/tslint --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc && $(yarn bin)/typedoc src",
-    "test": "$(yarn bin)/nyc --reporter=lcov --reporter=text $(yarn bin)/mocha --require ts-node/register",
-    "build:prod": "yarn test:prod && yarn build",
-    "test:prod": "yarn lint && yarn test -- --no-cache",
+    "build": "tsc && $(npm bin)/typedoc src",
+    "test": "$(npm bin)/nyc --reporter=lcov --reporter=text $(npm bin)/mocha --require ts-node/register",
+    "build:prod": "npm run test:prod && npm build",
+    "test:prod": "npm run lint && npm run test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "prepush": "yarn test:prod && yarn build",
+    "prepush": "npm run test:prod && npm run build",
     "commitmsg": "commitlint -E HUSKY_GIT_PARAMS"
   },
   "lint-staged": {
@@ -52,8 +49,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint",
-      "pre-push": "yarn test"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
     }
   },
   "prettier": {
@@ -66,19 +63,17 @@
     ]
   },
   "dependencies": {
-    "consola": "^2.15.0",
-    "log4js": "^6.3.0",
-    "redact-object": "^3.0.1",
+    "axios": "^0.24.0",
     "deep-spread": "^1.3.1",
-    "axios": "^0.19.2"
+    "log4js": "^6.3.0",
+    "redact-object": "^3.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@testdeck/mocha": "0.1.0",
+    "@types/mocha": "^8.0.3",
     "@types/node": "^10.11.0",
-    "nyc": "^15.1.0",
-    "axios": "0.19.2",
     "axios-mock-adapter": "^1.18.2",
     "chai": "^4.2.0",
     "colors": "^1.3.2",
@@ -88,26 +83,26 @@
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.0.1",
     "lint-staged": "^8.0.0",
-    "mocha": "^8.1.1",
-    "@types/mocha": "^8.0.3",
-    "tslint-plugin-prettier": "^2.3.0",
+    "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
+    "pino": "^6.6.1",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.0",
     "prompt": "^1.0.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
-    "pino": "^6.6.1",
     "semantic-release": "^17.2.3",
     "shelljs": "^0.8.3",
     "travis-deploy-once": "^5.0.9",
     "ts-loader": "^6.2.0",
-    "ts-mocha": "^7.0.0",
+    "ts-mocha": "^9.0.2",
     "ts-node": "^8.10.2",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-no-circular-imports": "^0.7.0",
+    "tslint-plugin-prettier": "^2.3.0",
     "typedoc": "^0.19.1",
     "typescript": "^3.9.5",
     "webpack": "^4.39.3",

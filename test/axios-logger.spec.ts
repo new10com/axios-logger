@@ -1,47 +1,55 @@
 import { params, suite, test } from '@testdeck/mocha'
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios'
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method
+} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { expect } from 'chai'
 import log4js from 'log4js'
 import { AxiosLogger, LogFn } from '../src/axios-logger'
 import { logger } from '../src/logger/logger'
-import { defaultConfig } from '../src/config/axiios-logger-config'
+import { defaultConfig } from '../src/config/axios-logger-config'
 
 describe('Axios Logger Test Suite', () => {
-    log4js.configure({
-        appenders: {
-            axios: { type: 'console', layout: { type: 'colored' }, level: 'debug' },
-        },
-        categories: { default: { appenders: ['axios'], level: 'debug' } },
-    })
+  log4js.configure({
+    appenders: {
+      axios: { type: 'console', layout: { type: 'colored' }, level: 'debug' }
+    },
+    categories: { default: { appenders: ['axios'], level: 'debug' } }
+  })
 
-    @suite('Axios Logger Constructor Test Suite')
-    class AxiosLoggerConstructorTestSuite extends AxiosLogger {
-        @test
-        'Test "using" static factory method'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.using(log4jsLogger.info, log4jsLogger.error)
-            const url = 'https://doodle.com'
-            const method: Method = 'GET'
-            const headers = { 'Content-Type': 'application/json' }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-            }
+  @suite('Axios Logger Constructor Test Suite')
+  class AxiosLoggerConstructorTestSuite extends AxiosLogger {
+    @test
+    'Test "using" static factory method'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.using(
+        log4jsLogger.info,
+        log4jsLogger.error
+      )
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = { 'Content-Type': 'application/json' }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers
+      }
 
-            axiosLogger.logRequest(axiosRequestConfig)
-            const expectedMessage = `
+      axiosLogger.logRequest(axiosRequestConfig)
+      const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: ${url}
   Method: @${method}
@@ -50,43 +58,43 @@ describe('Axios Logger Test Suite', () => {
   ├ Content-Type: "application/json"
   └
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
+    }
 
-        @test
-        'Test simple post request'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.from(log4jsLogger)
-            const url = 'https://doodle.com'
-            const method: Method = 'POST'
-            const headers = { 'Content-Type': 'application/json' }
-            const parameters = { firstName: 'John', lastName: 'Wick' }
-            const body = {
-                city: 'Amsterdam',
-                console: 'PS4',
-                score: 100,
-                hobbies: ['games', 'programming', 'tv shows'],
-            }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-                params: parameters,
-                data: body,
-            }
+    @test
+    'Test simple post request'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'POST'
+      const headers = { 'Content-Type': 'application/json' }
+      const parameters = { firstName: 'John', lastName: 'Wick' }
+      const body = {
+        city: 'Amsterdam',
+        console: 'PS4',
+        score: 100,
+        hobbies: ['games', 'programming', 'tv shows']
+      }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params: parameters,
+        data: body
+      }
 
-            axiosLogger.logRequest(axiosRequestConfig)
-            const expectedMessage = `
+      axiosLogger.logRequest(axiosRequestConfig)
+      const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: ${url}
   Method: @${method}
@@ -106,37 +114,37 @@ describe('Axios Logger Test Suite', () => {
 \t]
   }
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
     }
+  }
 
-    @suite('Axios Logger Request Test Suite')
-    class AxiosLoggerRequestTestSuite extends AxiosLogger {
-        @test
-        'Test simple get request'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.from(log4jsLogger)
-            const url = 'https://doodle.com'
-            const method: Method = 'GET'
-            const headers = { 'Content-Type': 'application/json' }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-            }
+  @suite('Axios Logger Request Test Suite')
+  class AxiosLoggerRequestTestSuite extends AxiosLogger {
+    @test
+    'Test simple get request'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = { 'Content-Type': 'application/json' }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers
+      }
 
-            axiosLogger.logRequest(axiosRequestConfig)
-            const expectedMessage = `
+      axiosLogger.logRequest(axiosRequestConfig)
+      const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: ${url}
   Method: @${method}
@@ -145,43 +153,43 @@ describe('Axios Logger Test Suite', () => {
   ├ Content-Type: "application/json"
   └
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
+    }
 
-        @test
-        'Test simple post request'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.from(log4jsLogger)
-            const url = 'https://doodle.com'
-            const method: Method = 'POST'
-            const headers = { 'Content-Type': 'application/json' }
-            const parameters = { firstName: 'John', lastName: 'Wick' }
-            const body = {
-                city: 'Amsterdam',
-                console: 'PS4',
-                score: 100,
-                hobbies: ['games', 'programming', 'tv shows'],
-            }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-                params: parameters,
-                data: body,
-            }
+    @test
+    'Test simple post request'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'POST'
+      const headers = { 'Content-Type': 'application/json' }
+      const parameters = { firstName: 'John', lastName: 'Wick' }
+      const body = {
+        city: 'Amsterdam',
+        console: 'PS4',
+        score: 100,
+        hobbies: ['games', 'programming', 'tv shows']
+      }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params: parameters,
+        data: body
+      }
 
-            axiosLogger.logRequest(axiosRequestConfig)
-            const expectedMessage = `
+      axiosLogger.logRequest(axiosRequestConfig)
+      const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: ${url}
   Method: @${method}
@@ -201,48 +209,48 @@ describe('Axios Logger Test Suite', () => {
 \t]
   }
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
     }
+  }
 
-    @suite('Axios Logger Response Test Suite')
-    class AxiosLoggerResponseTestSuite extends AxiosLogger {
-        @test
-        'Test Response with body'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.from(log4jsLogger)
-            const url = 'https://doodle.com'
-            const method: Method = 'GET'
-            const headers = { 'Content-Type': 'application/json' }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-            }
+  @suite('Axios Logger Response Test Suite')
+  class AxiosLoggerResponseTestSuite extends AxiosLogger {
+    @test
+    'Test Response with body'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = { 'Content-Type': 'application/json' }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers
+      }
 
-            const response = { success: true, status: 'DONE' }
+      const response = { success: true, status: 'DONE' }
 
-            const axiosResponse: AxiosResponse = {
-                data: response,
-                status: 200,
-                statusText: 'SUCCESS',
-                headers,
-                config: axiosRequestConfig,
-                request: axiosRequestConfig,
-            }
+      const axiosResponse: AxiosResponse = {
+        data: response,
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig
+      }
 
-            axiosLogger.logResponse(axiosResponse)
-            const expectedMessage = `
+      axiosLogger.logResponse(axiosResponse)
+      const expectedMessage = `
 ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @GET
@@ -257,43 +265,43 @@ describe('Axios Logger Test Suite', () => {
 	"status": "DONE"
   }
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
+    }
 
-        @test
-        'Test Response without body'() {
-            let message: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
-            const axiosLogger = AxiosLogger.from(log4jsLogger)
-            const url = 'https://doodle.com'
-            const method: Method = 'GET'
-            const headers = { 'Content-Type': 'application/json' }
-            const axiosRequestConfig: AxiosRequestConfig = {
-                url,
-                method,
-                baseURL: url,
-                headers,
-            }
+    @test
+    'Test Response without body'() {
+      let message: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = { 'Content-Type': 'application/json' }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers
+      }
 
-            const axiosResponse: AxiosResponse = {
-                data: null,
-                status: 200,
-                statusText: 'SUCCESS',
-                headers,
-                config: axiosRequestConfig,
-                request: axiosRequestConfig,
-            }
+      const axiosResponse: AxiosResponse = {
+        data: null,
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig
+      }
 
-            axiosLogger.logResponse(axiosResponse)
-            const expectedMessage = `
+      axiosLogger.logResponse(axiosResponse)
+      const expectedMessage = `
 ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @GET
@@ -305,89 +313,88 @@ describe('Axios Logger Test Suite', () => {
   Body:
   {}
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(message).to.equal(expectedMessage)
-        }
+      expect(message).to.equal(expectedMessage)
     }
+  }
 
-    @suite('Axios Logger Error Test Suite')
-    class AxiosLoggerErrorTestSuite extends AxiosLogger {
-        @test
-        'Test Log Request Error'(done) {
-            let message: object | string | undefined = ''
-            const infoLogMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const errorLogMock: LogFn = (
-                obj: object | string,
-                msg?: string,
-                ...args: any[]
-            ): void => {
-                message = obj
-                const expectedMessage = `
+  @suite('Axios Logger Error Test Suite')
+  class AxiosLoggerErrorTestSuite extends AxiosLogger {
+    @test
+    'Test Log Request Error'(done) {
+      let message: object | string | undefined = ''
+      const infoLogMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const errorLogMock: LogFn = (
+        obj: object | string,
+        msg?: string,
+        ...args: any[]
+      ): void => {
+        message = obj
+        const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: bla
   Method: @GET
   Headers:
   ┌ Accept: "application/json, text/plain, */*"
-  └ User-Agent: "axios/0.19.2"
+  └ User-Agent: "axios/0.24.0"
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ┌────── Response Error ──────────────────────────────────────────────────────────────────────────────────────────────
   Code: ECONNREFUSED
   Message: @connect ECONNREFUSED 127.0.0.1:80
   StackTrace: @Error: connect ECONNREFUSED 127.0.0.1:80
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1134:16)
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1146:16)
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`.replace(
-                    /net\.js:\d*:\d*/gi,
-                    '1',
-                )
-                message = (message as string).replace(/net\.js:\d*:\d*/gi, '1') // different node versions have different lint number
-                expect(message).to.equal(expectedMessage)
-                logger.error(message)
-            }
-            const axiosLogger = new AxiosLogger(infoLogMock, errorLogMock)
-            const instance = axios.create()
-            instance.interceptors.request.use(undefined, (err: AxiosError) => {
-                axiosLogger.logErrorDetails(err)
-                return Promise.reject(err)
-            })
-            instance.interceptors.response.use(undefined, (err: AxiosError) => {
-                axiosLogger.logErrorDetails(err)
-                return Promise.reject(err)
-            })
-            instance
-                .get('bla')
-                .then(resp => {
-                })
-                .catch(e => {
-                    if (e.stack.includes('AssertionError')) {
-                        done(e)
-                    } else {
-                        done()
-                    }
-                })
-        }
+          /net\.js:\d*:\d*/gi,
+          '1'
+        )
+        message = (message as string).replace(/net\.js:\d*:\d*/gi, '1') // different node versions have different lint number
+        expect(message).to.equal(expectedMessage)
+        logger.error(message)
+      }
+      const axiosLogger = new AxiosLogger(infoLogMock, errorLogMock)
+      const instance = axios.create()
+      instance.interceptors.request.use(undefined, (err: AxiosError) => {
+        axiosLogger.logErrorDetails(err)
+        return Promise.reject(err)
+      })
+      instance.interceptors.response.use(undefined, (err: AxiosError) => {
+        axiosLogger.logErrorDetails(err)
+        return Promise.reject(err)
+      })
+      instance
+        .get('bla')
+        .then(resp => {})
+        .catch(e => {
+          if (e.stack.includes('AssertionError')) {
+            done(e)
+          } else {
+            done()
+          }
+        })
+    }
 
-        @test
-        'Test Log Response Error'(done) {
-            let message: string | undefined = ''
-            const infoLogMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(message)
-            }
-            const errorLogMock: LogFn = (
-                obj: object | string,
-                msg?: string,
-                ...args: any[]
-            ): void => {
-                const baseDir = __dirname.replace('/test', '')
-                const expectedMessage = `
+    @test
+    'Test Log Response Error'(done) {
+      let message: string | undefined = ''
+      const infoLogMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const errorLogMock: LogFn = (
+        obj: object | string,
+        msg?: string,
+        ...args: any[]
+      ): void => {
+        const baseDir = __dirname.replace('/test', '')
+        const expectedMessage = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: /users
   Method: @GET
@@ -420,138 +427,146 @@ describe('Axios Logger Test Suite', () => {
     at MockAdapter.<anonymous> (${baseDir}/node_modules/axios-mock-adapter/src/index.js:25:14)
     at dispatchRequest (${baseDir}/node_modules/axios/lib/core/dispatchRequest.js:52:10)
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-                if (typeof obj === 'string') {
-                    // we need to remove stack trace, cuz on CI we get unstable results since node versions differ a bit
-                    const expectedMsg = expectedMessage.replace(/\sat.*\n/gm, '')
-                    const actualMsg = obj.replace(/\sat.*\n/gm, '')
-                    expect(actualMsg).to.equal(expectedMsg)
-                } else {
-                    expect(obj).to.equal(expectedMessage)
-                    logger.error(obj)
-                }
-            }
-            const axiosLogger = new AxiosLogger(infoLogMock, errorLogMock)
-            const instance = axios.create()
-            const axiosMock = new MockAdapter(instance)
-            axiosMock
-                .onGet('/users')
-                .reply(400, { error: 'Failure' }, { Content: 'application/json' })
-            instance.interceptors.request.use(
-                config => {
-                    config.headers.Authorization = 'Bla'
-                    return config
-                },
-                (err: AxiosError) => {
-                    axiosLogger.logErrorDetails(err)
-                    return Promise.reject(err)
-                },
-            )
-            instance.interceptors.response.use(undefined, (err: AxiosError) => {
-                axiosLogger.logErrorDetails(err)
-                return Promise.reject(err)
-            })
-            instance
-                .get('/users')
-                .then(resp => {
-                    done()
-                })
-                .catch(error => {
-                    if (error.stack.includes('AssertionError')) {
-                        done(error)
-                    } else {
-                        done()
-                    }
-                })
+        if (typeof obj === 'string') {
+          // we need to remove stack trace, cuz on CI we get unstable results since node versions differ a bit
+          const expectedMsg = expectedMessage.replace(/\sat.*\n/gm, '')
+          const actualMsg = obj.replace(/\sat.*\n/gm, '')
+          expect(actualMsg).to.equal(expectedMsg)
+        } else {
+          expect(obj).to.equal(expectedMessage)
+          logger.error(obj)
         }
-    }
-
-    @suite('Axios Integration Test Suite')
-    class AxiosIntegrationTest extends AxiosLogger {
-        @test 'I can see both request and response logged properly in real axios'(
-            done,
-        ) {
-            const instance = axios.create()
-            const axiosLogger = AxiosLogger.default()
-            instance.interceptors.request.use(
-                config => {
-                    axiosLogger.logRequest(config)
-                    return config
-                },
-                error => {
-                    axiosLogger.logErrorDetails(error)
-                    return Promise.reject(error)
-                },
-            )
-            instance.interceptors.response.use(
-                response => {
-                    axiosLogger.logResponse(response)
-                    return response
-                },
-                error => {
-                    axiosLogger.logErrorDetails(error)
-                    return Promise.reject(error)
-                },
-            )
-            instance
-                .get('https://jsonplaceholder.typicode.com/users')
-                .then(({ data }) => {
-                    expect(data).to.not.be.null
-                    done()
-                })
+      }
+      const axiosLogger = new AxiosLogger(infoLogMock, errorLogMock)
+      const instance = axios.create()
+      const axiosMock = new MockAdapter(instance)
+      axiosMock
+        .onGet('/users')
+        .reply(400, { error: 'Failure' }, { Content: 'application/json' })
+      instance.interceptors.request.use(
+        config => {
+          config.headers!.Authorization = 'Bla'
+          return config
+        },
+        (err: AxiosError) => {
+          axiosLogger.logErrorDetails(err)
+          return Promise.reject(err)
         }
+      )
+      instance.interceptors.response.use(undefined, (err: AxiosError) => {
+        axiosLogger.logErrorDetails(err)
+        return Promise.reject(err)
+      })
+      instance
+        .get('/users')
+        .then(resp => {
+          done()
+        })
+        .catch(error => {
+          if (error.stack.includes('AssertionError')) {
+            done(error)
+          } else {
+            done()
+          }
+        })
     }
+  }
 
-    @suite('Contentful Integration Test Suite')
-    class ContentfulIntegrationTest extends AxiosLogger {
-        @test 'I can see both request and response logged properly in real axios from contentful example'(
-            done,
-        ) {
-            const config = {
-                url: 'entries',
-                method: 'get' as Method,
-                baseURL: 'https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4',
-                headers: {
-                    common: {
-                        Accept: 'application/json, text/plain, */*',
-                    },
-                    delete: {},
-                    get: {},
-                    head: {},
-                    post: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    put: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    patch: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    'Content-Type': 'application/vnd.contentful.delivery.v1+json',
-                    'X-Contentful-User-Agent': 'sdk contentful.js/0.0.0-determined-by-semantic-release; platform node.js/v12.18.3; os macOS/19.6.0;',
-                    Authorization: 'Bearer <>',
-                    'user-agent': 'node.js/v12.18.3',
-                    'Accept-Encoding': 'gzip',
-                    'x-contentful-route': '/spaces/:space/environments/:environment/entries',
-                },
-                params: {
-                    content_type: 'drinkTag',
-                },
-                auth: undefined,
-            }
-            let capturedMsg: string = ''
-            const loggerMock: LogFn = (
-                msg: string | object,
-                ...args: any[]
-            ): void => {
-                capturedMsg = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-                logger.info(capturedMsg)
-            }
-            const log4jsLogger = log4js.getLogger('axios')
-            log4jsLogger.info = loggerMock
+  @suite('Axios Integration Test Suite')
+  class AxiosIntegrationTest extends AxiosLogger {
+    @test 'I can see both request and response logged properly in real axios'(
+      done
+    ) {
+      const instance = axios.create()
+      const axiosLogger = AxiosLogger.default()
+      instance.interceptors.request.use(
+        config => {
+          axiosLogger.logRequest(config)
+          return config
+        },
+        error => {
+          axiosLogger.logErrorDetails(error)
+          return Promise.reject(error)
+        }
+      )
+      instance.interceptors.response.use(
+        response => {
+          axiosLogger.logResponse(response)
+          return response
+        },
+        error => {
+          axiosLogger.logErrorDetails(error)
+          return Promise.reject(error)
+        }
+      )
+      instance
+        .get('https://jsonplaceholder.typicode.com/users')
+        .then(({ data }) => {
+          expect(data).to.not.be.null
+          done()
+        })
+    }
+  }
 
-            const axiosLogger = AxiosLogger.using(log4jsLogger.info, log4jsLogger.error)
-            axiosLogger.logRequest(config)
-            const expectedMsg = `
+  @suite('Contentful Integration Test Suite')
+  class ContentfulIntegrationTest extends AxiosLogger {
+    @test
+    'I can see both request and response logged properly in real axios from contentful example'(
+      done
+    ) {
+      const config = {
+        url: 'entries',
+        method: 'get' as Method,
+        baseURL:
+          'https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4',
+        headers: {
+          common: {
+            Accept: 'application/json, text/plain, */*'
+          },
+          delete: {},
+          get: {},
+          head: {},
+          post: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          put: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          patch: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          'Content-Type': 'application/vnd.contentful.delivery.v1+json',
+          'X-Contentful-User-Agent':
+            'sdk contentful.js/0.0.0-determined-by-semantic-release; platform node.js/v12.18.3; os macOS/19.6.0;',
+          Authorization: 'Bearer <>',
+          'user-agent': 'node.js/v12.18.3',
+          'Accept-Encoding': 'gzip',
+          'x-contentful-route':
+            '/spaces/:space/environments/:environment/entries'
+        },
+        params: {
+          content_type: 'drinkTag'
+        },
+        auth: undefined
+      }
+      let capturedMsg: string = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ...args: any[]
+      ): void => {
+        capturedMsg =
+          typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(capturedMsg)
+      }
+      const log4jsLogger = log4js.getLogger('axios')
+      log4jsLogger.info = loggerMock
+
+      const axiosLogger = AxiosLogger.using(
+        log4jsLogger.info,
+        log4jsLogger.error
+      )
+      axiosLogger.logRequest((config as unknown) as AxiosRequestConfig)
+      const expectedMsg = `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/entries
   Method: @GET
@@ -564,19 +579,18 @@ describe('Axios Logger Test Suite', () => {
   ├ x-contentful-route: "https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/spaces/:space/environments/:environment/entries"
   └ Accept: "application/json, text/plain, */*"
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
-            expect(capturedMsg).to.equal(expectedMsg)
-            done()
-        }
+      expect(capturedMsg).to.equal(expectedMsg)
+      done()
     }
+  }
 })
-
 
 @suite('Axios Logging Configuration Test Suite')
 class AxiosConfigurationTest extends AxiosLogger {
-    @params(
-        {
-            config: defaultConfig(),
-            expectedLog: `
+  @params(
+    {
+      config: defaultConfig(),
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -602,14 +616,14 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Default config',
-    )
-    @params(
-        {
-            config: { request: { shouldLogBody: false } },
-            expectedLog: `
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Default config'
+  )
+  @params(
+    {
+      config: { request: { shouldLogBody: false } },
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -631,14 +645,14 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Do not log request body',
-    )
-    @params(
-        {
-            config: { request: { shouldLogHeaders: false } },
-            expectedLog: `
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Do not log request body'
+  )
+  @params(
+    {
+      config: { request: { shouldLogHeaders: false } },
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -660,14 +674,14 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Do not log request headers',
-    )
-    @params(
-        {
-            config: { response: { shouldLogBody: false } },
-            expectedLog: `
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Do not log request headers'
+  )
+  @params(
+    {
+      config: { response: { shouldLogBody: false } },
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -689,14 +703,14 @@ class AxiosConfigurationTest extends AxiosLogger {
   ┌
   ├ Content-Type: "application/json"
   └
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Do not log response body',
-    )
-    @params(
-        {
-            config: { response: { shouldLogHeaders: false } },
-            expectedLog: `
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Do not log response body'
+  )
+  @params(
+    {
+      config: { response: { shouldLogHeaders: false } },
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -718,17 +732,17 @@ class AxiosConfigurationTest extends AxiosLogger {
   {
 \t"status": "success"
   }
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Do not log response headers',
-    )
-    @params(
-        {
-            config: {
-                request: { shouldLogHeaders: false, shouldLogBody: false },
-                response: { shouldLogHeaders: false, shouldLogBody: false },
-            },
-            expectedLog: `
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Do not log response headers'
+  )
+  @params(
+    {
+      config: {
+        request: { shouldLogHeaders: false, shouldLogBody: false },
+        response: { shouldLogHeaders: false, shouldLogBody: false }
+      },
+      expectedLog: `
 ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
   URL: https://doodle.com
   Method: @POST
@@ -738,45 +752,46 @@ class AxiosConfigurationTest extends AxiosLogger {
   URL: https://doodle.com
   Method: @POST
   Status: 200  SUCCESS
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
-        },
-        'Do not log request/response body and headers',
-    )
-    'Test Request Response details logging with configuration'({ config, expectedLog }) {
-        let messages: Array<string> = []
-        const loggerMock: LogFn = (
-            msg: string | object,
-            ...args: any[]
-        ): void => {
-            const message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
-            messages = [...messages, message]
-            logger.info(message)
-        }
-        const log4jsLogger = log4js.getLogger('axios')
-        log4jsLogger.info = loggerMock
-        const axiosLogger = AxiosLogger.from(log4jsLogger, config)
-        const url = 'https://doodle.com'
-        const method: Method = 'POST'
-        const headers = { 'Content-Type': 'application/json' }
-        const axiosRequestConfig: AxiosRequestConfig = {
-            url,
-            method,
-            baseURL: url,
-            headers,
-            data: { 'hello': 'world' },
-        }
-
-        const axiosResponse: AxiosResponse = {
-            data: { 'status': 'success' },
-            status: 200,
-            statusText: 'SUCCESS',
-            headers,
-            config: axiosRequestConfig,
-            request: axiosRequestConfig,
-        }
-
-        axiosLogger.logRequest(axiosRequestConfig)
-        axiosLogger.logResponse(axiosResponse)
-        expect(messages.join('\n')).to.equal(expectedLog)
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`
+    },
+    'Do not log request/response body and headers'
+  )
+  'Test Request Response details logging with configuration'({
+    config,
+    expectedLog
+  }) {
+    let messages: Array<string> = []
+    const loggerMock: LogFn = (msg: string | object, ...args: any[]): void => {
+      const message =
+        typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+      messages = [...messages, message]
+      logger.info(message)
     }
+    const log4jsLogger = log4js.getLogger('axios')
+    log4jsLogger.info = loggerMock
+    const axiosLogger = AxiosLogger.from(log4jsLogger, config)
+    const url = 'https://doodle.com'
+    const method: Method = 'POST'
+    const headers = { 'Content-Type': 'application/json' }
+    const axiosRequestConfig: AxiosRequestConfig = {
+      url,
+      method,
+      baseURL: url,
+      headers,
+      data: { hello: 'world' }
+    }
+
+    const axiosResponse: AxiosResponse = {
+      data: { status: 'success' },
+      status: 200,
+      statusText: 'SUCCESS',
+      headers,
+      config: axiosRequestConfig,
+      request: axiosRequestConfig
+    }
+
+    axiosLogger.logRequest(axiosRequestConfig)
+    axiosLogger.logResponse(axiosResponse)
+    expect(messages.join('\n')).to.equal(expectedLog)
+  }
 }

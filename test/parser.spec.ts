@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { logger } from '../src/logger/logger'
 import { Parser } from '../src/parser/parser'
 import { Formatter } from '../src/formatter/formatter'
-import { defaultConfig } from '../src/config/axiios-logger-config'
+import { defaultConfig } from '../src/config/axios-logger-config'
 const formatter = new Formatter(Formatter.defaultConfig())
 const indent = formatter.indent()
 describe('Parser Test Suite', () => {

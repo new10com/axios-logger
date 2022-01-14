@@ -4,7 +4,7 @@ import { AxiosLogger, LogFn } from '../src/axios-logger'
 import { logger } from '../src/logger/logger'
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from 'axios'
 import { expect } from 'chai'
-import { defaultConfig } from '../src/config/axiios-logger-config'
+import { defaultConfig } from '../src/config/axios-logger-config'
 import { DEFAULT_REDACTABLE_KEYS } from '../src/constants/constants'
 import { getRedactableKeys } from '../src/obfuscator/obfuscator'
 
