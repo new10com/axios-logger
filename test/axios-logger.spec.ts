@@ -341,7 +341,7 @@ describe('Axios Logger Test Suite', () => {
   Method: @GET
   Headers:
   ┌ Accept: "application/json, text/plain, */*"
-  └ User-Agent: "axios/0.24.0"
+  └ User-Agent: "axios/0.19.2"
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ┌────── Response Error ──────────────────────────────────────────────────────────────────────────────────────────────
   Code: ECONNREFUSED
