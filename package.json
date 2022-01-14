@@ -7,7 +7,7 @@
     "log"
   ],
   "main": "dist/src/axios-logger.js",
-  "typings": "dist/src/axios-logger.d.ts",
+  "typings": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
