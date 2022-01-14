@@ -21,7 +21,6 @@
     "prefer-conditional-expression": false,
     "no-implicit-dependencies": [false, "dev"],
     "no-submodule-imports": false,
-    "no-unused-variable": [true, { "ignore-pattern": "[iI]gnored" }],
     "no-namespace": {
       "options": ["allow-declarations"]
     },

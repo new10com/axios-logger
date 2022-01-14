@@ -1,5 +1,5 @@
 import redactObject from 'redact-object'
-import { ObfuscationConfig } from '../config/axiios-logger-config'
+import { ObfuscationConfig } from '../config/axios-logger-config'
 import { DEFAULT_REDACTABLE_KEYS } from '../constants/constants'
 
 const getRedactableKeysFromEnv = () => {

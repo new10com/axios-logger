@@ -1,6 +1,6 @@
 import { params, suite } from '@testdeck/mocha'
 import { expect } from 'chai'
-import { defaultConfig, prepareConfig } from '../src/config/axiios-logger-config'
+import { defaultConfig, prepareConfig } from '../src/config/axios-logger-config'
 import { AxiosLogger } from '../src/axios-logger'
 import { DEFAULT_REDACTABLE_KEYS } from '../src/constants/constants'
 

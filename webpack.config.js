@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/axios-logger.ts',
+    entry: './index.ts',
     devtool: 'inline-source-map',
     module: {
         rules: [
