@@ -6,8 +6,8 @@
     "axios",
     "log"
   ],
-  "main": "dist/src/axios-logger.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
