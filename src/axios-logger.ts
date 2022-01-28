@@ -1,6 +1,6 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import log4js, { Logger } from 'log4js'
-import { defaultConfig, IConfig } from './config/axiios-logger-config'
+import { defaultConfig, IConfig } from './config/axios-logger-config'
 import { Parser } from './parser/parser'
 
 export interface LogFn {

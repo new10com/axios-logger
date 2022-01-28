@@ -3,7 +3,7 @@ import {
   IConfig,
   ObfuscationConfig,
   prepareConfig
-} from '../config/axiios-logger-config'
+} from '../config/axios-logger-config'
 import { Formatter, Headers } from '../formatter/formatter'
 import { obfuscate } from '../obfuscator/obfuscator'
 import { Separator } from '../separator/separator'
@@ -92,7 +92,7 @@ export class Parser {
     )}: @${(request.method as string).toUpperCase()}`
     const headersName = `${this.formatter.title('Headers')}:`
     const baseUrl = request.baseURL
-    const headers = this.parseHeaders(request.headers, baseUrl)
+    const headers = this.parseHeaders(request.headers ?? {}, baseUrl)
     requestDetailsArr = this.config.request?.shouldLogHeaders
       ? [Separator.newLine(), startOfRequest, url, method, headersName, headers]
       : [Separator.newLine(), startOfRequest, url, method]
