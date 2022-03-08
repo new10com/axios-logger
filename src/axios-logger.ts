@@ -59,12 +59,14 @@ export class AxiosLogger {
     this.parser = new Parser(this.config)
   }
 
-  public logRequest(request: AxiosRequestConfig): void {
+  public logRequest(request: AxiosRequestConfig): AxiosRequestConfig {
     this.logInfo(this.parser.parseRequest(request))
+    return request
   }
 
-  public logResponse(resp: AxiosResponse): void {
+  public logResponse(resp: AxiosResponse): AxiosResponse {
     this.logInfo(this.parser.parseResponse(resp))
+    return resp
   }
 
   public logErrorDetails(err: any): void {
