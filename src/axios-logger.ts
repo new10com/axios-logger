@@ -69,7 +69,7 @@ export class AxiosLogger {
     return resp
   }
 
-  public logErrorDetails(err: any): void {
+  public logErrorDetails(err: unknown): unknown {
     const possibleError = err as AxiosError
     const parsedError = this.parser.parseError(err as AxiosError, 'Response')
     const parsedRequest = possibleError.config
@@ -83,5 +83,6 @@ export class AxiosLogger {
         .filter(el => el.length > 0)
         .join('\n')
     )
+    return err
   }
 }
