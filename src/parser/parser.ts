@@ -19,12 +19,12 @@ export class Parser {
         case 'string':
           try {
             const parsedBody = JSON.parse(body) as Record<string, unknown>
-            return obfuscate(parsedBody, config)
+            return obfuscate({ obj: parsedBody, config })
           } catch (e) {
             return body
           }
         case 'object':
-          return obfuscate(body as Record<string, unknown>, config)
+          return obfuscate({ obj: body as Record<string, unknown>, config })
         default:
           return body
       }
@@ -192,10 +192,10 @@ export class Parser {
       }
       const obfuscationConfig = this.config.obfuscation
       if (obfuscationConfig?.obfuscate) {
-        const obfuscatedMergedHeaders = obfuscate(
-          mergedHeaders,
-          obfuscationConfig
-        ) as Headers
+        const obfuscatedMergedHeaders = obfuscate({
+          obj: mergedHeaders,
+          config: obfuscationConfig,
+        }) as Headers
         return this.transformHeadersToStringArr(obfuscatedMergedHeaders).join(
           '\n'
         )

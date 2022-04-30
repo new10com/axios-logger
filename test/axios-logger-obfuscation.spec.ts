@@ -215,6 +215,101 @@ describe(`Axios Logger Obfuscation Test Suite`, () => {
 {"firstName":"John","lastName":"Wick","username":"johnwick","password":"iReallyLoveDogsAndGuns","token":"JohnWick123123"}  }
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
       ],
+      [
+        'Test that you can provide a custom replace value in the config',
+        true,
+        false,
+        {
+          obfuscation: {
+            obfuscate: true,
+            redactableKeys: ['Authorization', 'username', 'password'],
+            replaceVal: 'CUSTOM_REDACT_VALUE',
+          },
+        },
+        `
+┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com
+  Method: @POST
+  Headers:
+  ┌ Content-Type: "application/json"
+  └ Authorization: "CUSTOM_REDACT_VALUE"
+  Body:
+  {
+\t"firstName": "John",
+\t"lastName": "Wick",
+\t"username": "CUSTOM_REDACT_VALUE",
+\t"password": "CUSTOM_REDACT_VALUE",
+\t"token": "JohnWick123123"
+  }
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com
+  Method: @POST
+  Status: 200  SUCCESS
+  Headers
+  ┌ Content-Type: "application/json"
+  └ Authorization: "CUSTOM_REDACT_VALUE"
+  Body:
+  {
+\t"firstName": "John",
+\t"lastName": "Wick",
+\t"username": "CUSTOM_REDACT_VALUE",
+\t"password": "CUSTOM_REDACT_VALUE",
+\t"token": "JohnWick123123"
+  }
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
+      ],
+      [
+        'Test that you can provide a custom replace function in the config',
+        true,
+        false,
+        {
+          obfuscation: {
+            obfuscate: true,
+            redactableKeys: ['Authorization', 'username', 'password'],
+            replaceVal: (value: any, key: string) => {
+              if (DEFAULT_REDACTABLE_KEYS.includes(key)) {
+                return 'VALUE_FROM_FUNCTION'
+              }
+              return value
+            },
+          },
+        },
+        `
+┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com
+  Method: @POST
+  Headers:
+  ┌ Content-Type: "application/json"
+  └ Authorization: "VALUE_FROM_FUNCTION"
+  Body:
+  {
+\t"firstName": "John",
+\t"lastName": "Wick",
+\t"username": "johnwick",
+\t"password": "VALUE_FROM_FUNCTION",
+\t"token": "JohnWick123123"
+  }
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+  URL: https://doodle.com
+  Method: @POST
+  Status: 200  SUCCESS
+  Headers
+  ┌ Content-Type: "application/json"
+  └ Authorization: "VALUE_FROM_FUNCTION"
+  Body:
+  {
+\t"firstName": "John",
+\t"lastName": "Wick",
+\t"username": "johnwick",
+\t"password": "VALUE_FROM_FUNCTION",
+\t"token": "JohnWick123123"
+  }
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────`,
+      ],
     ])(`%s`, (title, bodyIsValidJson, bodyAsString, config, expected) => {
       let messages: Array<string> = []
       const loggerMock: LogFn = (

@@ -225,8 +225,26 @@ const envObfuscation: IConfig = {obfuscation: {obfuscate: true}}
 const envLogger = AxiosLogger.default(envObfuscation)
 
 // Another way is to directly pass this list of confidential keys to config
-const config: IConfig = {obfuscation: {obfuscate: true, redactableKeys: ['username', 'password']}}
+let config: IConfig = {obfuscation: {obfuscate: true, redactableKeys: ['username', 'password']}}
 const logger = AxiosLogger.default(config)
+
+// In case when you want to have some custom behaviour on how to obfuscate, you can pass custom function to config
+config: IConfig = {obfuscation: {obfuscate: true, redactableKeys: ['username', 'password']}, obfuscation: {
+        obfuscate: true,
+        redactableKeys: ['Authorization', 'username', 'password'],
+        replaceVal: (value: any, key: string) => {
+            if (DEFAULT_REDACTABLE_KEYS.includes(key)) {
+                return 'VALUE_FROM_FUNCTION'
+            }
+            return value
+        },
+    },}
+// Or if you don't like REDACTED value as a replacement for your confidential data, you can specify a different replacement value
+config: IConfig = {obfuscation: {obfuscate: true, redactableKeys: ['username', 'password']}, obfuscation: {
+        obfuscate: true,
+        redactableKeys: ['Authorization', 'username', 'password'],
+        replaceVal: 'MY_CUSTOM_REPLACEMENT',
+    },}
 ```
 
 ## Filtering level of logging request/response details

@@ -5,6 +5,7 @@ import {
 } from '../constants/constants'
 
 import { deepSpread } from 'deep-spread'
+import type { ReplaceFunction } from 'redact-object'
 
 export interface IConfig {
   indentChar?: string
@@ -17,6 +18,7 @@ export interface IConfig {
 export interface ObfuscationConfig {
   obfuscate?: boolean
   redactableKeys?: string[]
+  replaceVal?: string | ReplaceFunction
 }
 
 export interface RequestConfig {
