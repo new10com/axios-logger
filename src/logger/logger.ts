@@ -1,3 +1,3 @@
-import log4js from 'log4js'
+import { getLogger } from 'log4js'
 
-export const logger = log4js.getLogger('axios')
+export const logger = getLogger('axios')

@@ -23,6 +23,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false
   },
-  "include": ["*.ts", "src/**/*.ts", "test/**/*.ts"],
-  "exclude": [".vscode", "deploy", "node_modules"]
+  "include": ["*.ts", "src/**/*.ts", "test/**/*.ts", "*.js",
+    ".*.js",
+    "*.json",
+    ".*.json",
+    "*.ts",
+  ],
+  "exclude": [".vscode", "deploy", "node_modules", "docs", "tools"]
 }

@@ -9,5 +9,7 @@ export const DEFAULT_REDACTABLE_KEYS = [
   'password',
   'refreshToken',
   'token',
-  ...(process.env.LOGGER_EXTRA_REDACTABLE_KEYS || '').split(',').filter(Boolean)
+  ...(process.env.LOGGER_EXTRA_REDACTABLE_KEYS ?? '')
+    .split(',')
+    .filter(Boolean),
 ]

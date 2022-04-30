@@ -1,5 +1,5 @@
 export class Separator {
-  public static startingLine(name): string {
+  public static startingLine(name: string): string {
     return `┌────── ${name} ──────────────────────────────────────────────────────────────────────────────────────────────`
   }
 

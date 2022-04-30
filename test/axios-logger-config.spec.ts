@@ -1,144 +1,125 @@
-import { params, suite } from '@testdeck/mocha'
-import { expect } from 'chai'
-import { defaultConfig, prepareConfig } from '../src/config/axios-logger-config'
-import { AxiosLogger } from '../src/axios-logger'
+import {
+  defaultConfig,
+  IConfig,
+  prepareConfig,
+} from '../src/config/axios-logger-config'
 import { DEFAULT_REDACTABLE_KEYS } from '../src/constants/constants'
 
-@suite('Test Axios Logger Configuration Setup')
-class AxiosLoggerConfig extends AxiosLogger {
-    @params(
-        {
-            config: {},
-            expectedResult: defaultConfig(),
+describe(`Test Axios Logger Configuration Setup`, () => {
+  it.each([
+    [`Empty config`, {}, defaultConfig()],
+    [
+      `Different indent`,
+      { indent: 4 },
+      { ...defaultConfig(), ...{ indent: 4 } },
+    ],
+    [
+      `Different indent and indent char`,
+      { indent: 4, indentChar: '\t' },
+      { ...defaultConfig(), ...{ indent: 4, indentChar: '\t' } },
+    ],
+    [
+      `Obfuscation is enabled without specifying obfuscation keys`,
+      { obfuscation: { obfuscate: true } },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: true,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
         },
-        'Empty config',
-    )
-    @params(
-        {
-            config: { indent: 4 },
-            expectedResult: { ...defaultConfig(), ...{ indent: 4 } },
+        request: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
         },
-        'Different indent',
-    )
-    @params(
-        {
-            config: { indent: 4, indentChar: '\t' },
-            expectedResult: { ...defaultConfig(), ...{ indent: 4, indentChar: '\t' } },
+        response: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
         },
-        'Different indent and indent char',
-    )
-    @params(
-        {
-            config: { obfuscation: { obfuscate: true } },
-            expectedResult: {
-                indent: 2,
-                indentChar: ' ',
-                obfuscation: {
-                    obfuscate: true,
-                    redactableKeys: DEFAULT_REDACTABLE_KEYS,
-                },
-                request: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-                response: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-            },
+      },
+    ],
+    [
+      `Should not log request body`,
+      { request: { shouldLogBody: false } },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: false,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
         },
-        'Obfuscation is enabled without specifying obfuscation keys',
-    )
-    @params(
-        {
-            config: { request: { shouldLogBody: false } },
-            expectedResult: {
-                indent: 2,
-                indentChar: ' ',
-                obfuscation: {
-                    obfuscate: false,
-                    redactableKeys: DEFAULT_REDACTABLE_KEYS,
-                },
-                request: {
-                    shouldLogBody: false,
-                    shouldLogHeaders: true,
-                },
-                response: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-            },
+        request: {
+          shouldLogBody: false,
+          shouldLogHeaders: true,
         },
-        'Should not log request body',
-    )
-    @params(
-        {
-            config: { request: { shouldLogHeaders: false } },
-            expectedResult: {
-                indent: 2,
-                indentChar: ' ',
-                obfuscation: {
-                    obfuscate: false,
-                    redactableKeys: DEFAULT_REDACTABLE_KEYS,
-                },
-                request: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: false,
-                },
-                response: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-            },
+        response: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
         },
-        'Should not log request headers',
-    )
-    @params(
-        {
-            config: { response: { shouldLogBody: false } },
-            expectedResult: {
-                indent: 2,
-                indentChar: ' ',
-                obfuscation: {
-                    obfuscate: false,
-                    redactableKeys: DEFAULT_REDACTABLE_KEYS,
-                },
-                request: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-                response: {
-                    shouldLogBody: false,
-                    shouldLogHeaders: true,
-                },
-            },
+      },
+    ],
+    [
+      `Should not log request headers`,
+      { request: { shouldLogHeaders: false } },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: false,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
         },
-        'Should not log response body',
-    )
-    @params(
-        {
-            config: { response: { shouldLogHeaders: false } },
-            expectedResult: {
-                indent: 2,
-                indentChar: ' ',
-                obfuscation: {
-                    obfuscate: false,
-                    redactableKeys: DEFAULT_REDACTABLE_KEYS,
-                },
-                request: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: true,
-                },
-                response: {
-                    shouldLogBody: true,
-                    shouldLogHeaders: false,
-                },
-            },
+        request: {
+          shouldLogBody: true,
+          shouldLogHeaders: false,
         },
-        'Should not log response headers',
-    )
-    'Test Modification of Configuration'({ config, expectedResult }) {
-        const resultingConfig = prepareConfig(config)
-        expect(resultingConfig).to.deep.equal(expectedResult)
-    }
-}
+        response: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
+        },
+      },
+    ],
+    [
+      `Should not log response body`,
+      { response: { shouldLogBody: false } },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: false,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
+        },
+        request: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
+        },
+        response: {
+          shouldLogBody: false,
+          shouldLogHeaders: true,
+        },
+      },
+    ],
+    [
+      `Should not log response headers`,
+      { response: { shouldLogHeaders: false } },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: false,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
+        },
+        request: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
+        },
+        response: {
+          shouldLogBody: true,
+          shouldLogHeaders: false,
+        },
+      },
+    ],
+  ])(`%s`, (title, config, expected) => {
+    const resultingConfig = prepareConfig(config as IConfig)
+    expect(resultingConfig).toEqual(expected)
+  })
+})

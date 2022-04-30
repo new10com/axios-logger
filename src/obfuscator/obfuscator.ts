@@ -1,9 +1,10 @@
-import redactObject from 'redact-object'
-import { ObfuscationConfig } from '../config/axios-logger-config'
+import type { ObfuscationConfig } from '../config/axios-logger-config'
 import { DEFAULT_REDACTABLE_KEYS } from '../constants/constants'
 
+import redactObject from 'redact-object'
+
 const getRedactableKeysFromEnv = () => {
-  return (process.env.LOGGER_REDACTABLE_KEYS || '').split(',').filter(Boolean)
+  return (process.env.LOGGER_REDACTABLE_KEYS ?? '').split(',').filter(Boolean)
 }
 
 export function getRedactableKeys(config: ObfuscationConfig): string[] {
@@ -15,11 +16,14 @@ export function getRedactableKeys(config: ObfuscationConfig): string[] {
     : configRedactableKeys
 }
 
-export function obfuscate(obj: object, config: ObfuscationConfig): object {
+export function obfuscate(
+  obj: Record<string, unknown>,
+  config: ObfuscationConfig
+): Record<string, unknown> {
   const redactableKeys = getRedactableKeys(config)
   return redactObject(obj, redactableKeys, undefined, {
     partial: true,
     strict: false,
-    ignoreUnknown: true
-  })
+    ignoreUnknown: true,
+  }) as Record<string, unknown>
 }

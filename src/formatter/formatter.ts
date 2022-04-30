@@ -21,7 +21,7 @@ export class Formatter {
 
   private readonly config: FormatterConfig
 
-  constructor(config: FormatterConfig) {
+  public constructor(config: FormatterConfig) {
     this.config = config
   }
 
@@ -48,18 +48,21 @@ export class Formatter {
       case 'object':
         bodyAsString = indent + JSON.stringify(body, null, '\t')
         break
+      default:
+        break
     }
     const lastCurlyBracket = bodyAsString.lastIndexOf('}')
 
     return lastCurlyBracket > 0
-      ? bodyAsString.substr(0, lastCurlyBracket) +
-          `${indent}` +
-          bodyAsString.substr(lastCurlyBracket)
+      ? `${bodyAsString.substr(
+          0,
+          lastCurlyBracket
+        )}${indent}${bodyAsString.substr(lastCurlyBracket)}`
       : bodyAsString
   }
 
   public indent(): string {
-    if (this.config) {
+    if (this.config !== undefined) {
       const indent = this.config.indent ? this.config.indent : DEFAULT_INDENT
       const indentChar = this.config.indentChar
         ? this.config.indentChar
@@ -78,12 +81,16 @@ export class Formatter {
     const startingBracket = '┌'
     const middleBracket = '├'
     const endingBracket = '└'
-    const headerString = `${headerEntry.key}: "${headerEntry.value}"`
+    const value =
+      typeof headerEntry.value === 'string'
+        ? headerEntry.value
+        : JSON.stringify(headerEntry.value)
+    const headerString = `${headerEntry.key}: "${value}"`
     if (isFirstElement && isLastElement) {
       return [
         `${indent}${startingBracket}`,
         `${indent}${middleBracket} ${headerString}`,
-        `${indent}${endingBracket}`
+        `${indent}${endingBracket}`,
       ].join('\n')
     }
     if (isFirstElement) {

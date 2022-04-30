@@ -1,22 +1,25 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import log4js, { Logger } from 'log4js'
-import { defaultConfig, IConfig } from './config/axios-logger-config'
+import type { IConfig } from './config/axios-logger-config'
+import { defaultConfig } from './config/axios-logger-config'
 import { Parser } from './parser/parser'
 
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { Logger } from 'log4js'
+import { configure, getLogger } from 'log4js'
+
 export interface LogFn {
-  (msg: string, ...args: any[]): void
-  (obj: object, msg?: string, ...args: any[]): void
+  (msg: string, ...args: unknown[]): void
+  (obj: object | string, msg?: string, ...args: unknown[]): void
 }
 
 export class AxiosLogger {
   public static default(config: IConfig = defaultConfig()) {
-    log4js.configure({
+    configure({
       appenders: {
-        axios: { type: 'console', layout: { type: 'colored' }, level: 'debug' }
+        axios: { type: 'console', layout: { type: 'colored' }, level: 'debug' },
       },
-      categories: { default: { appenders: ['axios'], level: 'debug' } }
+      categories: { default: { appenders: ['axios'], level: 'debug' } },
     })
-    const log4jsLogger = log4js.getLogger('axios')
+    const log4jsLogger = getLogger('axios')
     return new AxiosLogger(
       log4jsLogger.info.bind(log4jsLogger),
       log4jsLogger.error.bind(log4jsLogger),
@@ -48,7 +51,7 @@ export class AxiosLogger {
   private parser: Parser
   private readonly config: IConfig
 
-  constructor(
+  public constructor(
     infoFn: LogFn,
     errorFn: LogFn,
     config: IConfig = defaultConfig()
@@ -70,19 +73,24 @@ export class AxiosLogger {
   }
 
   public logErrorDetails(err: unknown): unknown {
-    const possibleError = err as AxiosError
-    const parsedError = this.parser.parseError(err as AxiosError, 'Response')
-    const parsedRequest = possibleError.config
-      ? this.parser.parseRequest(possibleError.config)
-      : ''
-    const parsedResponse = possibleError.response
-      ? this.parser.parseResponse(possibleError.response)
-      : ''
-    this.logError(
-      [parsedRequest, parsedResponse, parsedError]
-        .filter(el => el.length > 0)
-        .join('\n')
-    )
+    if (err !== undefined) {
+      const possibleError: AxiosError = err as AxiosError
+      const parsedError = this.parser.parseError(err as AxiosError, 'Response')
+      const parsedRequest: string =
+        possibleError.config !== undefined
+          ? this.parser.parseRequest(possibleError.config)
+          : ''
+      const parsedResponse =
+        possibleError.response !== undefined
+          ? this.parser.parseResponse(possibleError.response)
+          : ''
+      this.logError(
+        [parsedRequest, parsedResponse, parsedError]
+          .filter((el) => el.length > 0)
+          .join('\n')
+      )
+      return err
+    }
     return err
   }
 }

@@ -1,12 +1,11 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import {
-  IConfig,
-  ObfuscationConfig,
-  prepareConfig
-} from '../config/axios-logger-config'
-import { Formatter, Headers } from '../formatter/formatter'
+import type { IConfig, ObfuscationConfig } from '../config/axios-logger-config'
+import { prepareConfig } from '../config/axios-logger-config'
+import type { Headers } from '../formatter/formatter'
+import { Formatter } from '../formatter/formatter'
 import { obfuscate } from '../obfuscator/obfuscator'
 import { Separator } from '../separator/separator'
+
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 type ErrorSource = 'Request' | 'Response'
 
@@ -19,13 +18,15 @@ export class Parser {
       switch (typeof body) {
         case 'string':
           try {
-            const parsedBody = JSON.parse(body)
+            const parsedBody = JSON.parse(body) as Record<string, unknown>
             return obfuscate(parsedBody, config)
           } catch (e) {
             return body
           }
         case 'object':
-          return obfuscate(body, config)
+          return obfuscate(body as Record<string, unknown>, config)
+        default:
+          return body
       }
     }
     return body
@@ -38,13 +39,13 @@ export class Parser {
     'patch',
     'put',
     'head',
-    'common'
+    'common',
   ]
 
   private formatter: Formatter
   private config: IConfig
 
-  constructor(config: IConfig) {
+  public constructor(config: IConfig) {
     this.config = prepareConfig(config)
     this.formatter = new Formatter(this.config)
   }
@@ -56,16 +57,18 @@ export class Parser {
         ? ''
         : `${this.formatter.title('Code')}: ${error.code}`
     const message = `${this.formatter.title('Message')}: @${error.message}`
-    const stackTrace = `${this.formatter.title('StackTrace')}: @${error.stack}`
+    const stackTrace = `${this.formatter.title('StackTrace')}: @${
+      error.stack ?? ''
+    }`
     return [
       Separator.newLine(),
       startOfRequest,
       code,
       message,
       stackTrace,
-      Separator.endingLine()
+      Separator.endingLine(),
     ]
-      .filter(el => el.length > 0)
+      .filter((el) => el.length > 0)
       .join('\n')
   }
 
@@ -84,19 +87,22 @@ export class Parser {
   }
 
   public parseRequest(request: AxiosRequestConfig): string {
-    let requestDetailsArr
+    let requestDetailsArr: unknown[]
     const startOfRequest = Separator.startingLine('Request')
     const url = `${this.formatter.title('URL')}: ${this.parseUrl(request)}`
-    const method = `${this.formatter.title(
-      'Method'
-    )}: @${(request.method as string).toUpperCase()}`
+    const method = `${this.formatter.title('Method')}: @${(
+      request.method as string
+    ).toUpperCase()}`
     const headersName = `${this.formatter.title('Headers')}:`
     const baseUrl = request.baseURL
-    const headers = this.parseHeaders(request.headers ?? {}, baseUrl)
+    const headers = this._parseHeaders(
+      (request.headers as Headers) ?? {},
+      baseUrl
+    )
     requestDetailsArr = this.config.request?.shouldLogHeaders
       ? [Separator.newLine(), startOfRequest, url, method, headersName, headers]
       : [Separator.newLine(), startOfRequest, url, method]
-    if (request.data && this.config.request?.shouldLogBody) {
+    if (request.data !== undefined && this.config.request?.shouldLogBody) {
       const { bodyTitle, body } = this.parseBodyDetails(
         request,
         this.config.obfuscation
@@ -107,18 +113,18 @@ export class Parser {
   }
 
   public parseResponse(resp: AxiosResponse): string {
-    let responseDetailsArr
     const startOfRequest = Separator.startingLine('Response')
     const url = `${this.formatter.title('URL')}: ${this.parseUrl(resp.config)}`
-    const method = `${this.formatter.title('Method')}: @${(resp.config
-      .method as string).toUpperCase()}`
-    const status = `${this.formatter.title('Status')}: ${resp.status} \ ${
+    const method = `${this.formatter.title('Method')}: @${(
+      resp.config.method as string
+    ).toUpperCase()}`
+    const status = `${this.formatter.title('Status')}: ${resp.status}  ${
       resp.statusText
     }`
     const headersName = `${this.formatter.title('Headers')}`
     const baseUrl = resp.config.baseURL
-    const headers = this.parseHeaders(resp.headers, baseUrl)
-    responseDetailsArr = this.config.response?.shouldLogHeaders
+    const headers = this._parseHeaders((resp.headers as Headers) ?? {}, baseUrl)
+    const responseDetailsArr = this.config.response?.shouldLogHeaders
       ? [
           Separator.newLine(),
           startOfRequest,
@@ -126,12 +132,16 @@ export class Parser {
           method,
           status,
           headersName,
-          headers
+          headers,
         ]
       : [Separator.newLine(), startOfRequest, url, method, status]
 
     const emptyBody = `${this.formatter.indent()}{}`
-    if (resp.data && this.config.response?.shouldLogBody) {
+    if (
+      resp.data !== undefined &&
+      resp.data !== null &&
+      this.config.response?.shouldLogBody
+    ) {
       const { bodyTitle, body } = this.parseBodyDetails(
         resp,
         this.config.obfuscation
@@ -140,7 +150,7 @@ export class Parser {
         ...responseDetailsArr,
         bodyTitle,
         body,
-        Separator.endingLine()
+        Separator.endingLine(),
       ].join('\n')
     } else if (this.config.response?.shouldLogBody) {
       const bodyTitle = `${this.formatter.title('Body')}:`
@@ -148,7 +158,7 @@ export class Parser {
         ...responseDetailsArr,
         bodyTitle,
         emptyBody,
-        Separator.endingLine()
+        Separator.endingLine(),
       ].join('\n')
     } else {
       return [...responseDetailsArr, Separator.endingLine()].join('\n')
@@ -156,7 +166,7 @@ export class Parser {
   }
 
   // this method is created in order to enable unit testing of protected @parseHeaders method
-  protected setFormatter(formatter: Formatter) {
+  public _setFormatter(formatter: Formatter) {
     this.formatter = formatter
   }
 
@@ -165,19 +175,23 @@ export class Parser {
     this.config = config
   }
 
-  protected parseHeaders(headers: Headers, baseUrl: string = ''): string {
-    if (headers) {
+  public _parseHeaders(headers: Headers, baseUrl = ''): string {
+    if (headers !== undefined) {
       const commonHeaders = headers.common as Headers
       const mergedHeaders: Headers = { ...headers, ...commonHeaders }
       delete mergedHeaders.common
-      if (mergedHeaders['x-contentful-route'] && baseUrl) {
+      const xContentfulRouteHeader: string =
+        typeof mergedHeaders['x-contentful-route'] === 'object'
+          ? JSON.stringify(mergedHeaders['x-contentful-route'])
+          : mergedHeaders['x-contentful-route']
+      if (xContentfulRouteHeader !== undefined && baseUrl) {
         // specific for contentful
         mergedHeaders[
           'x-contentful-route'
-        ] = `${baseUrl}${mergedHeaders['x-contentful-route']}`
+        ] = `${baseUrl}${xContentfulRouteHeader}`
       }
       const obfuscationConfig = this.config.obfuscation
-      if (obfuscationConfig && obfuscationConfig.obfuscate) {
+      if (obfuscationConfig?.obfuscate) {
         const obfuscatedMergedHeaders = obfuscate(
           mergedHeaders,
           obfuscationConfig
@@ -195,13 +209,13 @@ export class Parser {
     const headersString: string[] = []
     Object.keys(headers).forEach((key, index, headersArray) => {
       if (
-        headers.hasOwnProperty(key) &&
+        Object.prototype.hasOwnProperty.call(headers, key) &&
         this.ignoreHeaderKeys.indexOf(key) === -1
       ) {
         const formattedHeaderEntry = this.formatter.prettyHeaderEntry(
           {
             key,
-            value: headers[key]
+            value: headers[key],
           },
           index === 0,
           index === headersArray.length - 1
@@ -218,7 +232,7 @@ export class Parser {
   ): { bodyTitle: string; body: string } {
     const bodyTitle = `${this.formatter.title('Body')}:`
     const body = this.formatter.prettyFormatBody(
-      Parser.prepareBodyForFormatting(request.data, config)
+      Parser.prepareBodyForFormatting(request.data as string | object, config)
     )
     return { bodyTitle, body }
   }

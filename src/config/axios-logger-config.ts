@@ -1,10 +1,10 @@
-import { deepSpread } from 'deep-spread'
-
 import {
   DEFAULT_INDENT,
   DEFAULT_INDENT_CHAR,
-  DEFAULT_REDACTABLE_KEYS
+  DEFAULT_REDACTABLE_KEYS,
 } from '../constants/constants'
+
+import { deepSpread } from 'deep-spread'
 
 export interface IConfig {
   indentChar?: string
@@ -35,10 +35,14 @@ export function defaultConfig(): IConfig {
     indentChar: DEFAULT_INDENT_CHAR,
     obfuscation: { obfuscate: false, redactableKeys: DEFAULT_REDACTABLE_KEYS },
     request: { shouldLogHeaders: true, shouldLogBody: true },
-    response: { shouldLogHeaders: true, shouldLogBody: true }
+    response: { shouldLogHeaders: true, shouldLogBody: true },
   }
 }
 
 export function prepareConfig(config: IConfig): IConfig {
-  return deepSpread({ ...defaultConfig(), ...config }, defaultConfig())
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  return deepSpread(
+    { ...defaultConfig(), ...config },
+    defaultConfig()
+  ) as IConfig
 }

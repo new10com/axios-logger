@@ -1,6 +1,6 @@
 const path = require("path")
 const { fork } = require("child_process")
-const colors = require("colors")
+const { cyan, green, gray, red } = require("colorette")
 
 const { readFileSync, writeFileSync } = require("fs")
 const pkg = JSON.parse(
@@ -19,35 +19,35 @@ writeFileSync(
 fork(path.resolve(__dirname, "..", "node_modules", "husky", "lib", "installer", 'bin'), ['install'])
 
 console.log()
-console.log(colors.green("Done!!"))
+console.log(green("Done!!"))
 console.log()
 
 if (pkg.repository.url.trim()) {
-  console.log(colors.cyan("Now run:"))
-  console.log(colors.cyan("  npm install -g semantic-release-cli"))
-  console.log(colors.cyan("  semantic-release-cli setup"))
+  console.log(cyan("Now run:"))
+  console.log(cyan("  npm install -g semantic-release-cli"))
+  console.log(cyan("  semantic-release-cli setup"))
   console.log()
   console.log(
-    colors.cyan('Important! Answer NO to "Generate travis.yml" question')
+    cyan('Important! Answer NO to "Generate travis.yml" question')
   )
   console.log()
   console.log(
-    colors.gray(
+    gray(
       'Note: Make sure "repository.url" in your package.json is correct before'
     )
   )
 } else {
   console.log(
-    colors.red(
+    red(
       'First you need to set the "repository.url" property in package.json'
     )
   )
-  console.log(colors.cyan("Then run:"))
-  console.log(colors.cyan("  npm install -g semantic-release-cli"))
-  console.log(colors.cyan("  semantic-release-cli setup"))
+  console.log(cyan("Then run:"))
+  console.log(cyan("  npm install -g semantic-release-cli"))
+  console.log(cyan("  semantic-release-cli setup"))
   console.log()
   console.log(
-    colors.cyan('Important! Answer NO to "Generate travis.yml" question')
+    cyan('Important! Answer NO to "Generate travis.yml" question')
   )
 }
 
