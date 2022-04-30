@@ -23,7 +23,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint . --cache=true",
     "prebuild": "rimraf dist",
-    "build": "tsc && $(npm bin)/typedoc src",
+    "build": "tsc && $(npm bin)/typedoc",
     "test": "jest -w 4",
     "test:coverage": "npm run test -- --collectCoverage=true",
     "build:prod": "npm run test:prod && npm run build",
