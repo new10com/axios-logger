@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "lint": "node_modules/eslint/bin/eslint.js . --cache=true",
+    "lint": "node_modules/.bin/eslint . --cache=true",
     "prebuild": "rimraf dist",
     "build": "tsc && $(npm bin)/typedoc src",
     "test": "jest -w 4",
