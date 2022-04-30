@@ -2,3 +2,4 @@ docs/*
 tools/*
 .gitignore
 coverage
+dist/*
