@@ -1,8 +1,9 @@
-import { AxiosLogger, LogFn } from '../src/axios-logger'
-import { logger } from '../src/logger/logger'
-import { defaultConfig } from '../src/config/axios-logger-config'
-import { DEFAULT_REDACTABLE_KEYS } from '../src/constants/constants'
-import { getRedactableKeys } from '../src/obfuscator/obfuscator'
+import { getRedactableKeys } from './obfuscator'
+
+import { AxiosLogger, LogFn } from '../axios-logger'
+import { logger } from '../logger/logger'
+import { defaultConfig } from '../config/axios-logger-config'
+import { DEFAULT_REDACTABLE_KEYS } from '../constants/constants'
 
 import { AxiosRequestConfig, AxiosResponse, Method } from 'axios'
 import { configure, getLogger } from 'log4js'

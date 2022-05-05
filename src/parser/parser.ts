@@ -73,17 +73,32 @@ export class Parser {
   }
 
   public parseUrl(requestConfig: AxiosRequestConfig): string {
-    const url = requestConfig.url === undefined ? '' : requestConfig.url
+    const url: string = requestConfig.url === undefined ? '' : requestConfig.url
     const baseURL = requestConfig.baseURL
+    const urlParts: string[] = []
     if (url) {
       if (url.includes('://')) {
-        return url
+        urlParts.push(url)
       }
       if (baseURL && !url.includes('://')) {
-        return `${baseURL}/${url}`
+        urlParts.push(`${baseURL}/${url}`)
       }
     }
-    return url
+    const requestParams: [string, unknown][] =
+      requestConfig.params === undefined
+        ? []
+        : Object.entries(requestConfig.params as Record<string, unknown>)
+
+    if (requestParams.length > 0) {
+      urlParts.push('?')
+      for (const [k, v] of requestParams) {
+        urlParts.push(`${k}=${String(v)}&`)
+      }
+    }
+    const combinedUrl = urlParts.join('')
+    return combinedUrl.charAt(combinedUrl.length - 1) === '&'
+      ? combinedUrl.slice(0, -1)
+      : combinedUrl
   }
 
   public parseRequest(request: AxiosRequestConfig): string {

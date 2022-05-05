@@ -1,6 +1,6 @@
-import { AxiosLogger, LogFn } from '../src/axios-logger'
-import { logger } from '../src/logger/logger'
-import { defaultConfig } from '../src/config/axios-logger-config'
+import { AxiosLogger, LogFn } from './axios-logger'
+import { logger } from './logger/logger'
+import { defaultConfig } from './config/axios-logger-config'
 
 import axios, {
   AxiosError,
@@ -72,7 +72,7 @@ describe(`Axios Logger Test Suite`, () => {
       const url = 'https://doodle.com'
       const method: Method = 'POST'
       const headers = { 'Content-Type': 'application/json' }
-      const parameters = { firstName: 'John', lastName: 'Wick' }
+      const params = { firstName: 'John', lastName: 'Wick' }
       const body = {
         city: 'Amsterdam',
         console: 'PS4',
@@ -84,7 +84,7 @@ describe(`Axios Logger Test Suite`, () => {
         method,
         baseURL: url,
         headers,
-        params: parameters,
+        params,
         data: body,
       }
 
@@ -92,7 +92,7 @@ describe(`Axios Logger Test Suite`, () => {
       expect(message).toMatchInlineSnapshot(`
         "
         ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
-          URL: https://doodle.com
+          URL: https://doodle.com?firstName=John&lastName=Wick
           Method: @POST
           Headers:
           ┌
@@ -367,7 +367,7 @@ describe(`Axios Logger Test Suite`, () => {
       expect(capturedMsg).toMatchInlineSnapshot(`
         "
         ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
-          URL: https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/entries
+          URL: https://cdn.contentful.com:443/spaces/ctqb7xehjnk4/environments/prod-v4/entries?content_type=drinkTag
           Method: @GET
           Headers:
           ├ Content-Type: \\"application/vnd.contentful.delivery.v1+json\\"

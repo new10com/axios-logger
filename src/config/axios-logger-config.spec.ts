@@ -1,9 +1,6 @@
-import {
-  defaultConfig,
-  IConfig,
-  prepareConfig,
-} from '../src/config/axios-logger-config'
-import { DEFAULT_REDACTABLE_KEYS } from '../src/constants/constants'
+import { defaultConfig, IConfig, prepareConfig } from './axios-logger-config'
+
+import { DEFAULT_REDACTABLE_KEYS } from '../constants/constants'
 
 describe(`Test Axios Logger Configuration Setup`, () => {
   it.each([

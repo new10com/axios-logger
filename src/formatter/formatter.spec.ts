@@ -1,4 +1,4 @@
-import { Formatter } from '../src/formatter/formatter'
+import { Formatter } from './formatter'
 
 const formatter = new Formatter(Formatter.defaultConfig())
 const indent = formatter.indent()

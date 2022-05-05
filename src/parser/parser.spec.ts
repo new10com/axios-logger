@@ -1,6 +1,7 @@
-import { Formatter } from '../src/formatter/formatter'
-import { Parser } from '../src/parser/parser'
-import { defaultConfig } from '../src/config/axios-logger-config'
+import { Parser } from './parser'
+
+import { Formatter } from '../formatter/formatter'
+import { defaultConfig } from '../config/axios-logger-config'
 
 const formatter = new Formatter(Formatter.defaultConfig())
 const indent = formatter.indent()
@@ -30,33 +31,55 @@ ${indent}}`,
     it.each([
       [
         'Url should be used if it has "://" and baseUrl is empty',
-        { url: 'https://google.com', baseURL: '' },
+        { url: 'https://google.com', baseURL: '', params: undefined },
         'https://google.com',
       ],
       [
         'Url should be used if it has "://" and baseUrl is not empty',
-        { url: 'https://google.com', baseURL: 'https://go.com' },
+        {
+          url: 'https://google.com',
+          baseURL: 'https://go.com',
+          params: undefined,
+        },
         'https://google.com',
       ],
       [
         'BaseUrl should be used if url doesnt have "://"',
-        { url: 'entries', baseURL: 'https://google.com' },
+        { url: 'entries', baseURL: 'https://google.com', params: undefined },
         'https://google.com/entries',
       ],
       [
         'Both url and baseUrl are empty',
-        { url: 'google.com', baseURL: '' },
-        'google.com',
+        { url: '', baseURL: '', params: undefined },
+        '',
       ],
       [
         'Both url and baseUrl are undefined',
-        { url: undefined, baseURL: undefined },
+        { url: undefined, baseURL: undefined, params: undefined },
         '',
+      ],
+      [
+        'Request has string query params',
+        {
+          url: 'https://google.com',
+          baseURL: undefined,
+          params: { q: 'hello' },
+        },
+        'https://google.com?q=hello',
+      ],
+      [
+        'Request has multiple query params',
+        {
+          url: 'https://google.com',
+          baseURL: undefined,
+          params: { q: 'hello', s: 123 },
+        },
+        'https://google.com?q=hello&s=123',
       ],
     ])(`%s`, (title, config, expectedUrl) => {
       const parser = new Parser(defaultConfig())
       const url = parser.parseUrl(config)
-      expect(url).toEqual(expectedUrl)
+      expect(expectedUrl).toEqual(url)
     })
   })
 

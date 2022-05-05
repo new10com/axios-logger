@@ -1,4 +1,4 @@
-import { Separator } from '../src/separator/separator'
+import { Separator } from './separator'
 
 describe('Separator Test Suite', () => {
   it(`should test that starting line of request/response is displayed properly`, () => {
