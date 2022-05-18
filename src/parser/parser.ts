@@ -10,21 +10,30 @@ import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 type ErrorSource = 'Request' | 'Response'
 
 export class Parser {
-  private static prepareBodyForFormatting(
-    body: string | object,
-    config?: ObfuscationConfig
-  ): string | object {
-    if (config?.obfuscate) {
+  private static prepareBodyForFormatting({
+    body,
+    obfuscationConfig,
+  }: {
+    body: string | object
+    obfuscationConfig?: ObfuscationConfig
+  }): string | object {
+    if (obfuscationConfig?.obfuscate) {
       switch (typeof body) {
         case 'string':
           try {
             const parsedBody = JSON.parse(body) as Record<string, unknown>
-            return obfuscate({ obj: parsedBody, config })
+            return obfuscate({
+              obj: parsedBody,
+              obfuscationConfig,
+            })
           } catch (e) {
             return body
           }
         case 'object':
-          return obfuscate({ obj: body as Record<string, unknown>, config })
+          return obfuscate({
+            obj: body as Record<string, unknown>,
+            obfuscationConfig,
+          })
         default:
           return body
       }
@@ -118,10 +127,10 @@ export class Parser {
       ? [Separator.newLine(), startOfRequest, url, method, headersName, headers]
       : [Separator.newLine(), startOfRequest, url, method]
     if (request.data !== undefined && this.config.request?.shouldLogBody) {
-      const { bodyTitle, body } = this.parseBodyDetails(
-        request,
-        this.config.obfuscation
-      )
+      const { bodyTitle, body } = this.parseBodyDetails({
+        axiosRequestConfig: request,
+        obfuscationConfig: this.config.obfuscation,
+      })
       requestDetailsArr = [...requestDetailsArr, bodyTitle, body]
     }
     return [...requestDetailsArr, Separator.endingLine()].join('\n')
@@ -157,10 +166,10 @@ export class Parser {
       resp.data !== null &&
       this.config.response?.shouldLogBody
     ) {
-      const { bodyTitle, body } = this.parseBodyDetails(
-        resp,
-        this.config.obfuscation
-      )
+      const { bodyTitle, body } = this.parseBodyDetails({
+        axiosRequestConfig: resp,
+        obfuscationConfig: this.config.obfuscation,
+      })
       return [
         ...responseDetailsArr,
         bodyTitle,
@@ -209,7 +218,7 @@ export class Parser {
       if (obfuscationConfig?.obfuscate) {
         const obfuscatedMergedHeaders = obfuscate({
           obj: mergedHeaders,
-          config: obfuscationConfig,
+          obfuscationConfig,
         }) as Headers
         return this.transformHeadersToStringArr(obfuscatedMergedHeaders).join(
           '\n'
@@ -241,14 +250,21 @@ export class Parser {
     return headersString
   }
 
-  private parseBodyDetails(
-    request: AxiosRequestConfig,
-    config?: ObfuscationConfig
-  ): { bodyTitle: string; body: string } {
+  private parseBodyDetails({
+    axiosRequestConfig,
+    obfuscationConfig,
+  }: {
+    axiosRequestConfig: AxiosRequestConfig
+    obfuscationConfig?: ObfuscationConfig
+  }): { bodyTitle: string; body: string } {
     const bodyTitle = `${this.formatter.title('Body')}:`
-    const body = this.formatter.prettyFormatBody(
-      Parser.prepareBodyForFormatting(request.data as string | object, config)
-    )
-    return { bodyTitle, body }
+    const parsedBody = Parser.prepareBodyForFormatting({
+      body: axiosRequestConfig.data as string | object,
+      obfuscationConfig,
+    })
+    const prettyFormattedBody = this.formatter.prettyFormatBody({
+      body: parsedBody,
+    })
+    return { bodyTitle, body: prettyFormattedBody }
   }
 }

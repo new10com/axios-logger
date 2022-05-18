@@ -23,7 +23,7 @@ ${indent}}`,
         `${indent}Hello how are you?`,
       ],
     ])(`%s`, (title, body, expected) => {
-      expect(formatter.prettyFormatBody(body)).toEqual(expected)
+      expect(formatter.prettyFormatBody({ body })).toEqual(expected)
     })
   })
 

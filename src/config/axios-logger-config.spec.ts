@@ -115,6 +115,31 @@ describe(`Test Axios Logger Configuration Setup`, () => {
         },
       },
     ],
+    [
+      `Should limit request/response body length`,
+      {
+        response: { maxLogContentLength: 1024 },
+        request: { maxLogContentLength: 1024 },
+      },
+      {
+        indent: 2,
+        indentChar: ' ',
+        obfuscation: {
+          obfuscate: false,
+          redactableKeys: DEFAULT_REDACTABLE_KEYS,
+        },
+        request: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
+          maxLogContentLength: 1024,
+        },
+        response: {
+          shouldLogBody: true,
+          shouldLogHeaders: true,
+          maxLogContentLength: 1024,
+        },
+      },
+    ],
   ])(`%s`, (title, config, expected) => {
     const resultingConfig = prepareConfig(config as IConfig)
     expect(resultingConfig).toEqual(expected)

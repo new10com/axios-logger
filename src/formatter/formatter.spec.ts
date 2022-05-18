@@ -27,7 +27,16 @@ ${indent}}`,
         `${indent}Hello how are you?`,
       ],
     ])(`%s`, (title, body, expected) => {
-      expect(formatter.prettyFormatBody(body)).toEqual(expected)
+      expect(formatter.prettyFormatBody({ body })).toEqual(expected)
+    })
+
+    it(`should return warning message when body length is longer then set in config`, () => {
+      const body = 'Hello how are you?'.repeat(100)
+      expect(
+        formatter.prettyFormatBody({ body, maxLogContentLength: 10 })
+      ).toEqual(
+        `Body is too long to be displayed. Length: 1802kb. Max length: 10kb.`
+      )
     })
   })
 

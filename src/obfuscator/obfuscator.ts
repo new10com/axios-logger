@@ -18,13 +18,13 @@ export function getRedactableKeys(config: ObfuscationConfig): string[] {
 
 export function obfuscate({
   obj,
-  config,
+  obfuscationConfig,
 }: {
   obj: Record<string, unknown>
-  config: ObfuscationConfig
+  obfuscationConfig: ObfuscationConfig
 }): Record<string, unknown> {
-  const redactableKeys = getRedactableKeys(config)
-  return redactObject(obj, redactableKeys, config.replaceVal, {
+  const redactableKeys = getRedactableKeys(obfuscationConfig)
+  return redactObject(obj, redactableKeys, obfuscationConfig.replaceVal, {
     partial: true,
     strict: false,
     ignoreUnknown: true,

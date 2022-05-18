@@ -29,8 +29,15 @@ export class Formatter {
     return `  ${detailName}`
   }
 
-  public prettyFormatBody(body: string | object): string {
+  public prettyFormatBody({
+    body,
+    maxLogContentLength,
+  }: {
+    body: string | object
+    maxLogContentLength?: number
+  }): string {
     let bodyAsString = ''
+
     const indent = this.indent()
     switch (typeof body) {
       case 'string':
@@ -52,7 +59,12 @@ export class Formatter {
         break
     }
     const lastCurlyBracket = bodyAsString.lastIndexOf('}')
-
+    if (maxLogContentLength !== undefined) {
+      const bodyLengthInKv = new TextEncoder().encode(bodyAsString).length
+      if (bodyLengthInKv > maxLogContentLength) {
+        return `Body is too long to be displayed. Length: ${bodyLengthInKv}kb. Max length: ${maxLogContentLength}kb.`
+      }
+    }
     return lastCurlyBracket > 0
       ? `${bodyAsString.substr(
           0,

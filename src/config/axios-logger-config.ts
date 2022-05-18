@@ -24,11 +24,13 @@ export interface ObfuscationConfig {
 export interface RequestConfig {
   shouldLogHeaders?: boolean
   shouldLogBody?: boolean
+  maxLogContentLength?: number // in kb
 }
 
 export interface ResponseConfig {
   shouldLogHeaders?: boolean
   shouldLogBody?: boolean
+  maxLogContentLength?: number // in kb
 }
 
 export function defaultConfig(): IConfig {
