@@ -269,6 +269,17 @@ const config = { request: { shouldLogHeaders: false }, response: { shouldLogHead
 const config = { request: { shouldLogHeaders: false , shouldLogBody: false}, response: { shouldLogHeaders: false , shouldLogBody: false} }
 ```
 
+## Skipping too long request/response body
+In case you would like to skip logging request/response body for requests/responses that are too long, you can do so by passing maxBodyLength to config:
+```typescript
+// Request
+// If you want to limit lenght of request body to 1KB
+const config = { request: { maxLogContentLength: 1024 } } // lenght of request body will be limited to 1KB
+
+// Response
+// If you want to limit lenght of resonse body to 1KB
+const config = { request: { maxLogContentLength: 1024 } } // lenght of request body will be limited to 1KB
+```
 ## CONTRIBUTE
 
 Suggestions and MR's are welcome :)
