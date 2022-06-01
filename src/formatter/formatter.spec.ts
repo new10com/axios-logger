@@ -35,7 +35,7 @@ ${indent}}`,
       expect(
         formatter.prettyFormatBody({ body, maxLogContentLength: 10 })
       ).toEqual(
-        `Body is too long to be displayed. Length: 1802kb. Max length: 10kb.`
+        `Body is too long to be displayed. Length: 1802 bytes. Max length: 10 bytes.`
       )
     })
   })

@@ -1,5 +1,7 @@
 import { DEFAULT_INDENT, DEFAULT_INDENT_CHAR } from '../constants/constants'
 
+import { Buffer } from 'buffer'
+
 export interface Headers {
   [key: string]: string | object
 }
@@ -60,9 +62,9 @@ export class Formatter {
     }
     const lastCurlyBracket = bodyAsString.lastIndexOf('}')
     if (maxLogContentLength !== undefined) {
-      const bodyLengthInKv = new TextEncoder().encode(bodyAsString).length
-      if (bodyLengthInKv > maxLogContentLength) {
-        return `Body is too long to be displayed. Length: ${bodyLengthInKv}kb. Max length: ${maxLogContentLength}kb.`
+      const bodyLengthInBytes = Buffer.byteLength(bodyAsString)
+      if (bodyLengthInBytes > maxLogContentLength) {
+        return `Body is too long to be displayed. Length: ${bodyLengthInBytes} bytes. Max length: ${maxLogContentLength} bytes.`
       }
     }
     return lastCurlyBracket > 0
