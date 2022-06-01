@@ -1,6 +1,6 @@
 {
   "name": "@new10com/axios-logger",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Library that should be used as axios request/response interceptor for logging in a pretty format request/response details",
   "keywords": [
     "axios",

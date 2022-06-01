@@ -2,7 +2,7 @@ import type { IConfig, ObfuscationConfig } from '../config/axios-logger-config'
 import { prepareConfig } from '../config/axios-logger-config'
 import type { Headers } from '../formatter/formatter'
 import { Formatter } from '../formatter/formatter'
-import { obfuscate } from '../obfuscator/obfuscator'
+import { obfuscate, obfuscateFormData } from '../obfuscator/obfuscator'
 import { Separator } from '../separator/separator'
 
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -27,6 +27,15 @@ export class Parser {
               obfuscationConfig,
             })
           } catch (e) {
+            if (body.includes('&')) {
+              // then it looks like we have a form data body, and we can try to obfuscate it
+              try {
+                return obfuscateFormData({ input: body, obfuscationConfig })
+              } catch (e) {
+                // in case we were wrong, we just return the original body
+                return body
+              }
+            }
             return body
           }
         case 'object':

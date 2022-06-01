@@ -363,6 +363,223 @@ describe(`Axios Logger Obfuscation Test Suite`, () => {
       axiosLogger.logResponse(axiosResponse)
       expect(messages.join('\n')).toEqual(expected)
     })
+    it(`should obfuscate form-data with default value when replace value is missing`, () => {
+      let messages: Array<string> = []
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        const message =
+          typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        messages = [...messages, message]
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+
+      const config = {
+        obfuscation: {
+          obfuscate: true,
+          redactableKeys: ['Authorization', 'username', 'password'],
+        },
+      }
+      const axiosLogger = AxiosLogger.from(log4jsLogger, config)
+      const url = 'https://doodle.com'
+      const method: Method = 'POST'
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer superSecretCode',
+      }
+      const body = 'username=johnwick&password=iReallyLoveDogsAndGuns'
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        data: body,
+      }
+
+      const axiosResponse: AxiosResponse = {
+        data: {},
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      axiosLogger.logResponse(axiosResponse)
+      expect(messages.join('\n')).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Headers:
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"[ REDACTED ]\\"
+          Body:
+          username=[ REDACTED ]&password=[ REDACTED ]
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+        ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Status: 200  SUCCESS
+          Headers
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"[ REDACTED ]\\"
+          Body:
+          {  }
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
+
+    it(`should obfuscate form-data with default value when replace value is a string`, () => {
+      let messages: Array<string> = []
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        const message =
+          typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        messages = [...messages, message]
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+
+      const config = {
+        obfuscation: {
+          obfuscate: true,
+          redactableKeys: ['Authorization', 'username', 'password'],
+          replaceVal: '<redacted>',
+        },
+      }
+      const axiosLogger = AxiosLogger.from(log4jsLogger, config)
+      const url = 'https://doodle.com'
+      const method: Method = 'POST'
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer superSecretCode',
+      }
+      const body = 'username=johnwick&password=iReallyLoveDogsAndGuns'
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        data: body,
+      }
+
+      const axiosResponse: AxiosResponse = {
+        data: {},
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      axiosLogger.logResponse(axiosResponse)
+      expect(messages.join('\n')).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Headers:
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"<redacted>\\"
+          Body:
+          username=<redacted>&password=<redacted>
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+        ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Status: 200  SUCCESS
+          Headers
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"<redacted>\\"
+          Body:
+          {  }
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
+
+    it(`should obfuscate form-data with default value when replace value is a function`, () => {
+      let messages: Array<string> = []
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        const message =
+          typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        messages = [...messages, message]
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+
+      const config = {
+        obfuscation: {
+          obfuscate: true,
+          redactableKeys: ['Authorization', 'username', 'password'],
+          replaceVal: (value, key) => `<redacted_for_${key}>`,
+        },
+      }
+      const axiosLogger = AxiosLogger.from(log4jsLogger, config)
+      const url = 'https://doodle.com'
+      const method: Method = 'POST'
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer superSecretCode',
+      }
+      const body = 'username=johnwick&password=iReallyLoveDogsAndGuns'
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        data: body,
+      }
+
+      const axiosResponse: AxiosResponse = {
+        data: {},
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      axiosLogger.logResponse(axiosResponse)
+      expect(messages.join('\n')).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Headers:
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"<redacted_for_Authorization>\\"
+          Body:
+          username=<redacted_for_username>&password=<redacted_for_password>
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+        ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @POST
+          Status: 200  SUCCESS
+          Headers
+          ┌ Content-Type: \\"application/json\\"
+          └ Authorization: \\"<redacted_for_Authorization>\\"
+          Body:
+          {  }
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
   })
 
   describe(`Axios Logger Obfuscator functions suite`, () => {
