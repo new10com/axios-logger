@@ -1,7 +1,5 @@
 import { DEFAULT_INDENT, DEFAULT_INDENT_CHAR } from '../constants/constants'
 
-import { Buffer } from 'buffer'
-
 export interface Headers {
   [key: string]: string | object
 }
@@ -34,9 +32,11 @@ export class Formatter {
   public prettyFormatBody({
     body,
     maxLogContentLength,
+    contentLength,
   }: {
     body: string | object
     maxLogContentLength?: number
+    contentLength?: number
   }): string {
     let bodyAsString = ''
 
@@ -61,11 +61,12 @@ export class Formatter {
         break
     }
     const lastCurlyBracket = bodyAsString.lastIndexOf('}')
-    if (maxLogContentLength !== undefined) {
-      const bodyLengthInBytes = Buffer.byteLength(bodyAsString)
-      if (bodyLengthInBytes > maxLogContentLength) {
-        return `Body is too long to be displayed. Length: ${bodyLengthInBytes} bytes. Max length: ${maxLogContentLength} bytes.`
-      }
+    if (
+      contentLength !== undefined &&
+      maxLogContentLength !== undefined &&
+      contentLength > maxLogContentLength
+    ) {
+      return `Body is too long to be displayed. Length: ${contentLength} bytes. Max length: ${maxLogContentLength} bytes.`
     }
     return lastCurlyBracket > 0
       ? `${bodyAsString.substr(

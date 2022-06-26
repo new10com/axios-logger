@@ -56,7 +56,85 @@ describe(`Axios Logger Test Suite`, () => {
         └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
       `)
     })
+  })
 
+  describe(`Axios Logger Request Test Suite`, () => {
+    it(`Test simple get request`, () => {
+      let message = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = { 'Content-Type': 'application/json' }
+      const params = { firstName: 'John', lastName: 'Wick' }
+
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      expect(message).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com?firstName=John&lastName=Wick
+          Method: @GET
+          Headers:
+          ┌
+          ├ Content-Type: \\"application/json\\"
+          └
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
+    it(`Test simple delete request`, () => {
+      let message = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'DELETE'
+      const headers = { 'Content-Type': 'application/json' }
+      const params = { firstName: 'John', lastName: 'Wick' }
+
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      expect(message).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com?firstName=John&lastName=Wick
+          Method: @DELETE
+          Headers:
+          ┌
+          ├ Content-Type: \\"application/json\\"
+          └
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
     it(`Test simple post request`, () => {
       let message = ''
       const loggerMock: LogFn = (
@@ -112,6 +190,112 @@ describe(`Axios Logger Test Suite`, () => {
         └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
       `)
     })
+    it(`Test simple update request`, () => {
+      let message = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger)
+      const url = 'https://doodle.com'
+      const method: Method = 'PATCH'
+      const headers = { 'Content-Type': 'application/json' }
+      const params = { firstName: 'John', lastName: 'Wick' }
+      const body = {
+        city: 'Amsterdam',
+        console: 'PS4',
+        score: 100,
+        hobbies: ['games', 'programming', 'tv shows'],
+      }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params,
+        data: body,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      expect(message).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com?firstName=John&lastName=Wick
+          Method: @PATCH
+          Headers:
+          ┌
+          ├ Content-Type: \\"application/json\\"
+          └
+          Body:
+          {
+        	\\"city\\": \\"Amsterdam\\",
+        	\\"console\\": \\"PS4\\",
+        	\\"score\\": 100,
+        	\\"hobbies\\": [
+        		\\"games\\",
+        		\\"programming\\",
+        		\\"tv shows\\"
+        	]
+          }
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
+    it(`Test that body does not get logged when it's more then allowed`, () => {
+      let message = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger, {
+        request: { maxLogContentLength: 10 },
+      })
+      const url = 'https://doodle.com'
+      const method: Method = 'PATCH'
+      const body = {
+        city: 'Amsterdam',
+        console: 'PS4',
+        score: 100,
+        hobbies: ['games', 'programming', 'tv shows'],
+      }
+      const headers = {
+        'Content-Type': 'application/json',
+        'Content-Length': JSON.stringify(body).length,
+      }
+      const params = { firstName: 'John', lastName: 'Wick' }
+
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+        params,
+        data: body,
+      }
+
+      axiosLogger.logRequest(axiosRequestConfig)
+      expect(message).toMatchInlineSnapshot(`
+        "
+        ┌────── Request ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com?firstName=John&lastName=Wick
+          Method: @PATCH
+          Headers:
+          ┌ Content-Type: \\"application/json\\"
+          └ Content-Length: \\"93\\"
+          Body:
+        Body is too long to be displayed. Length: 93 bytes. Max length: 10 bytes.
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
   })
 
   describe(`Axios Logger Response Test Suite`, () => {
@@ -164,6 +348,59 @@ describe(`Axios Logger Test Suite`, () => {
         	\\"success\\": true,
         	\\"status\\": \\"DONE\\"
           }
+        └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
+      `)
+    })
+    it(`Test that body does not get logged when it's more then allowed`, () => {
+      let message = ''
+      const loggerMock: LogFn = (
+        msg: string | object,
+        ..._args: unknown[]
+      ): void => {
+        message = typeof msg === 'string' ? msg : JSON.stringify(msg, null, 2)
+        logger.info(message)
+      }
+      const log4jsLogger = getLogger('axios')
+      log4jsLogger.info = loggerMock
+      const axiosLogger = AxiosLogger.from(log4jsLogger, {
+        response: { maxLogContentLength: 10 },
+      })
+      const url = 'https://doodle.com'
+      const method: Method = 'GET'
+      const headers = {
+        'Content-Type': 'application/json',
+        'Content-Length': '100',
+      }
+      const axiosRequestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        baseURL: url,
+        headers,
+      }
+
+      const response = { success: true, status: 'DONE' }
+
+      const axiosResponse: AxiosResponse = {
+        data: response,
+        status: 200,
+        statusText: 'SUCCESS',
+        headers,
+        config: axiosRequestConfig,
+        request: axiosRequestConfig,
+      }
+
+      axiosLogger.logResponse(axiosResponse)
+      expect(message).toMatchInlineSnapshot(`
+        "
+        ┌────── Response ──────────────────────────────────────────────────────────────────────────────────────────────
+          URL: https://doodle.com
+          Method: @GET
+          Status: 200  SUCCESS
+          Headers
+          ┌ Content-Type: \\"application/json\\"
+          └ Content-Length: \\"100\\"
+          Body:
+        Body is too long to be displayed. Length: 100 bytes. Max length: 10 bytes.
         └─────────────────────────────────────────────────────────────────────────────────────────────────────────────"
       `)
     })

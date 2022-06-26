@@ -136,9 +136,14 @@ export class Parser {
       ? [Separator.newLine(), startOfRequest, url, method, headersName, headers]
       : [Separator.newLine(), startOfRequest, url, method]
     if (request.data !== undefined && this.config.request?.shouldLogBody) {
+      const contentLength: number | undefined = Parser.getContentLength(
+        request.headers as Headers
+      )
       const { bodyTitle, body } = this.parseBodyDetails({
         axiosRequestConfig: request,
         obfuscationConfig: this.config.obfuscation,
+        maxLogContentLength: this.config.request?.maxLogContentLength,
+        contentLength,
       })
       requestDetailsArr = [...requestDetailsArr, bodyTitle, body]
     }
@@ -175,9 +180,14 @@ export class Parser {
       resp.data !== null &&
       this.config.response?.shouldLogBody
     ) {
+      const contentLength: number | undefined = Parser.getContentLength(
+        resp.headers as Headers
+      )
       const { bodyTitle, body } = this.parseBodyDetails({
         axiosRequestConfig: resp,
         obfuscationConfig: this.config.obfuscation,
+        maxLogContentLength: this.config.response?.maxLogContentLength,
+        contentLength,
       })
       return [
         ...responseDetailsArr,
@@ -262,9 +272,13 @@ export class Parser {
   private parseBodyDetails({
     axiosRequestConfig,
     obfuscationConfig,
+    maxLogContentLength,
+    contentLength,
   }: {
     axiosRequestConfig: AxiosRequestConfig
     obfuscationConfig?: ObfuscationConfig
+    maxLogContentLength?: number
+    contentLength?: number
   }): { bodyTitle: string; body: string } {
     const bodyTitle = `${this.formatter.title('Body')}:`
     const parsedBody = Parser.prepareBodyForFormatting({
@@ -273,7 +287,19 @@ export class Parser {
     })
     const prettyFormattedBody = this.formatter.prettyFormatBody({
       body: parsedBody,
+      maxLogContentLength,
+      contentLength,
     })
     return { bodyTitle, body: prettyFormattedBody }
+  }
+
+  private static getContentLength(headers: Headers): number | undefined {
+    const foundKey = Object.keys(headers).find(
+      (key) => key.toLowerCase() === 'Content-Length'.toLowerCase()
+    )
+    if (foundKey === undefined) {
+      return undefined
+    }
+    return Number(headers[foundKey])
   }
 }
