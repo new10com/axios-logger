@@ -110,7 +110,7 @@ export class Parser {
     if (requestParams.length > 0) {
       urlParts.push('?')
       for (const [k, v] of requestParams) {
-        urlParts.push(`${k}=${String(v)}&`)
+        urlParts.push(`${k}=${encodeURIComponent(String(v))}&`)
       }
     }
     const combinedUrl = urlParts.join('')

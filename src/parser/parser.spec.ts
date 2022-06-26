@@ -76,6 +76,15 @@ ${indent}}`,
         },
         'https://google.com?q=hello&s=123',
       ],
+      [
+        'Request parameters has spaces',
+        {
+          url: 'https://google.com',
+          baseURL: undefined,
+          params: { q: 'hello world', s: 123 },
+        },
+        'https://google.com?q=hello%20world&s=123',
+      ],
     ])(`%s`, (title, config, expectedUrl) => {
       const parser = new Parser(defaultConfig())
       const url = parser.parseUrl(config)
