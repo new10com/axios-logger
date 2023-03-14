@@ -1,4 +1,7 @@
-# Axios Logger
+# Deprecated
+This project is no longer maintained and has been archived/deprecated
+
+## Axios Logger
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Coverage Status](https://coveralls.io/repos/github/new10com/axios-logger/badge.svg?branch=master)](https://coveralls.io/github/new10com/axios-logger?branch=master)
